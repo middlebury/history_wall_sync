@@ -58,7 +58,10 @@ table.report .pager {
 table.report td.warnings {
 	color: darkred;
 }
-
+table.report td.warnings ul {
+	max-height: 10em;
+	overflow-y: scroll;
+}
 
 #category_area {
 	float: right;
