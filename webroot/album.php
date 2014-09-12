@@ -10,6 +10,7 @@ $photoset = (object)$flickr->photosets_getInfo($photoset_id);
 ?>
 <html>
 <head>
+	<meta charset="UTF-8">
 	<title>Album Report - <?php print htmlspecialchars(implode(' ', $photoset->title)); ?></title>
 	<link rel="stylesheet" href="report.css" type="text/css" />
 </head>

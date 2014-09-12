@@ -5,6 +5,7 @@ require_once (dirname(__FILE__).'/../include/init.php');
 ?>
 <html>
 <head>
+	<meta charset="UTF-8">
 	<title>Middlebury Flickr - History Wall reports</title>
 	<link rel="stylesheet" href="report.css" type="text/css" />
 </head>
