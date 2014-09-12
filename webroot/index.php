@@ -25,6 +25,16 @@ require_once (dirname(__FILE__).'/../include/init.php');
 		<p>This report will show a paginated list of all images in the Flickr photostream.</p>
 		<ul><li><a href="all.php">All Images</a></li></ul>
 
+	<h2>By Decade</h2>
+	<p>Choose a decade to view the report for all images with taken-dates in that decade.</p>
+	<p class='decades'>
+	<?php
+		foreach ($DECADES as $dec) {
+			print "\n\t\t<a href='decade.php?decade=".$dec."'>".$dec."s</a> &nbsp; ";
+		}
+	?>
+	</p>
+
 	<h2>By Album</h2>
 	<p>Choose an album to see the report for all images in the album.</p>
 	<ul class='albums'>

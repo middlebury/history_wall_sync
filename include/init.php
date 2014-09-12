@@ -74,3 +74,9 @@ $WALL_CATEGORIES = array(
 	"Ephemera",
 	"Illustrations",			
 );
+
+$DECADES = array(1800);
+$now = intval(date('Y'));
+for ($i = 1900; $i <= $now; $i = $i + 10) {
+	$DECADES[] = $i;
+}
