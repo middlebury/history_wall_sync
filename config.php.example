@@ -1,0 +1,45 @@
+<?php
+
+/*********************************************************
+ * API Keys
+ *********************************************************/
+$FLICKR_API_KEY = '';
+$FLICKR_API_SECRET = '';
+
+
+
+/*********************************************************
+ * Flickr API Caching
+ *
+ * The settings allow the Flickr API wrapper to cache data
+ * avoid repeated identical calls from going out to the
+ * Flickr servers when the data is already in hand.
+ *********************************************************/
+/**
+ * Caching type. Leave empty for no caching.
+ *   ''     no caching
+ *   'fs'   file-system caching
+ *   'db'   database caching
+ */
+$FLICKR_API_CACHE_TYPE = 'fs';
+
+/**
+ * Location should be a filesystem path if using 'fs'
+ * or a PEAR::DB style connection string if using 'db'
+ *
+ * Examples:
+ *   '/tmp/history_wall_flickr_cache'
+ *   'mysql://user:password@server/database'
+ */
+$FLICKR_API_CACHE_LOCATION = '/tmp/history_wall_flickr_cache';
+
+/**
+ * Cache lifetime in seconds. Default is 600s
+ */
+$FLICKR_API_CACHE_LIFETIME = 60;
+
+
+/*********************************************************
+ * Source Flickr account settings
+ *********************************************************/
+$FLICKR_USERID = "119982455@N07";

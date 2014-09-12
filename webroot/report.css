@@ -1,0 +1,53 @@
+body {
+	padding: 20px;
+}
+
+body>h1,body>h2 {
+	margin-left: -10px;
+}
+
+body>ul.albums>li {
+	border-top: 1px solid;
+	padding-top: 5px;
+	margin-bottom: 15px;
+	list-style-type: none;
+	clear: both;
+}
+body>ul.albums>li img {
+	float: left;
+	margin-bottom: inherit;
+	margin-right: 20px;
+}
+
+body>ul.albums>li h4 {
+	margin-top: 0px;
+}
+
+table.report td.categories ul {
+	padding-left: 0px;
+}
+table.report td.categories li {
+	padding-top: 5px;
+	list-style-type: none;
+	white-space: nowrap;
+}
+
+table.report td.title {
+	font-family: monospace;
+	font-size: 13px;
+	width: 264px; /* 8px per char * 33 chars */
+}
+
+table.report td.description {
+	font-family: monospace;
+	font-size: 13px;
+	width: 528px; /* 8px per char * 66 chars */
+}
+
+table.report .pager {
+	text-align: right;
+}
+
+table.report td.warnings {
+	color: darkred;
+}
