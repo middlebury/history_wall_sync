@@ -12,7 +12,7 @@ require_once (dirname(__FILE__).'/../include/init.php');
 <body>
 
 	<h1>Middlebury Flickr - History Wall  reports</h1>
-	<p>Below are reports of the parsed output of the Flickr. These reports are presented separately to allow easier location and evaluation of sets of images.</p>
+	<p>Below are reports of the parsed output of the Flickr archive that will eventually be sent to the History Wall. These reports are presented separately to allow easier location and evaluation of various groups of images.</p>
 
 	<h2>Single Image</h2>
 	<form action="single.php" method="GET">
@@ -58,10 +58,7 @@ foreach ($photosets['photoset'] as $photoset) {
 	print "\n\t\t</a>";
 	print " (".$photoset->photos." photos)";
 	print "\n\t</h4>";
-	print "\n\t<p>".nl2br(htmlspecialchars(implode(' ', $photoset->description)))."</p>";
-	print "\n\t<ul>";
-	print "\n\t\t<li><a href='album.php?photoset=".$photoset->id."'>Wall Export Report</a></li>";
-	print "\n\t</ul>";		
+	print "\n\t<p>".nl2br(htmlspecialchars(implode(' ', $photoset->description)))."</p>";	
 	print "\n</li>";
 }
 ?>
