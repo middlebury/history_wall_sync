@@ -19,11 +19,12 @@ require_once (dirname(__FILE__).'/../include/init.php');
 		<br><input type="text" name="photo" size="80">
 		<input type="submit" value="Show Report"/>
 	</form>
+-->	
 	
 	<h2>All Images</h2>
 		<p>This report will show a paginated list of all images in the Flickr photostream.</p>
 		<ul><li><a href="all.php">All Images</a></li></ul>
--->	
+
 	<h2>By Album</h2>
 	<p>Choose an album to see the report for all images in the album.</p>
 	<ul class='albums'>
