@@ -30,7 +30,7 @@ class FlickrWallPhoto {
 		
 		$this->wall_categories = array();
 		foreach($wall_categories as $cat) {
-			$this->wall_categories[$cat] = str_replace(' ', '', strtolower($cat));
+			$this->wall_categories[$cat] = str_replace("'", '', str_replace(' ', '', strtolower($cat)));
 		}
 		
 		$this->special_prefixes = array(
