@@ -13,14 +13,13 @@ require_once (dirname(__FILE__).'/../include/init.php');
 
 	<h1>Middlebury Flickr - History Wall  reports</h1>
 	<p>Below are reports of the parsed output of the Flickr. These reports are presented separately to allow easier location and evaluation of sets of images.</p>
-<!--	
+
 	<h2>Single Image</h2>
 	<form action="single.php" method="GET">
 		<label for="photo">Paste the photo's Flickr id or URL in the text area and submit to see the report for just that image:</label>
 		<br><input type="text" name="photo" size="80">
 		<input type="submit" value="Show Report"/>
 	</form>
--->	
 	
 	<h2>All Images</h2>
 		<p>This report will show a paginated list of all images in the Flickr photostream.</p>

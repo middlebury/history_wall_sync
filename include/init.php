@@ -1,6 +1,8 @@
 <?php
 
 require_once (dirname(__FILE__).'/../phpflickr/phpFlickr.php');
+require_once (dirname(__FILE__).'/../include/PhotoIterator.php');
+require_once (dirname(__FILE__).'/../include/SinglePhotoIterator.php');
 require_once (dirname(__FILE__).'/../include/PhotoSearchIterator.php');
 require_once (dirname(__FILE__).'/../include/PhotoSetIterator.php');
 require_once (dirname(__FILE__).'/../include/PhotoPrinter.php');
