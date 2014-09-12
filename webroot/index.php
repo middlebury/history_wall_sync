@@ -37,11 +37,11 @@ foreach ($photosets['photoset'] as $photoset) {
 	print "\n\t</a>";
 	print "\n\t<h4>";
 	print "\n\t\t<a href='https://www.flickr.com/photos/".$photoset->primary_photo_extras['pathalias']."/sets/".$photoset->id."/'>";
-	print implode(' ', $photoset->title);
+	print htmlspecialchars(implode(' ', $photoset->title));
 	print "\n\t\t</a>";
 	print " (".$photoset->photos." photos)";
 	print "\n\t</h4>";
-	print "\n\t<p>".implode(' ', $photoset->description)."</p>";
+	print "\n\t<p>".nl2br(htmlspecialchars(implode(' ', $photoset->description)))."</p>";
 	print "\n\t<ul>";
 	print "\n\t\t<li><a href='album.php?photoset=".$photoset->id."'>Wall Export Report</a></li>";
 	print "\n\t</ul>";		

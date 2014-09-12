@@ -10,14 +10,14 @@ $photoset = (object)$flickr->photosets_getInfo($photoset_id);
 ?>
 <html>
 <head>
-	<title>Album Report: Middlebury Flickr - History Wall</title>
+	<title>Album Report - <?php print htmlspecialchars(implode(' ', $photoset->title)); ?></title>
 	<link rel="stylesheet" href="report.css" type="text/css" />
 </head>
 <body>
 	<?php include(dirname(__FILE__).'/header.php'); ?>
 	
 	<h1>Middlebury Flickr - History Wall Report</h1>
-	<h2>Album: <?php print implode(' ', $photoset->title); ?></h2>
+	<h2>Album: <?php print htmlspecialchars(implode(' ', $photoset->title)); ?></h2>
 	
 <?php
 
