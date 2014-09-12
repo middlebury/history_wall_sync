@@ -36,7 +36,7 @@ foreach ($photosets['photoset'] as $photoset) {
 	print "\n\t\t<img src='".$photoset->primary_photo_extras['url_sq']."'/>";
 	print "\n\t</a>";
 	print "\n\t<h4>";
-	print "\n\t\t<a href='https://www.flickr.com/photos/".$photoset->primary_photo_extras['pathalias']."/sets/".$photoset->id."/'>";
+	print "\n\t\t<a href='album.php?photoset=".$photoset->id."'>";
 	print htmlspecialchars(implode(' ', $photoset->title));
 	print "\n\t\t</a>";
 	print " (".$photoset->photos." photos)";
