@@ -31,7 +31,7 @@ $FLICKR_API_CACHE_TYPE = 'fs';
  *   '/tmp/history_wall_flickr_cache'
  *   'mysql://user:password@server/database'
  */
-$FLICKR_API_CACHE_LOCATION = '/tmp/history_wall_flickr_cache';
+$FLICKR_API_CACHE_LOCATION = dirname(__FILE__).'/cache';
 
 /**
  * Cache lifetime in seconds. Default is 600s
