@@ -21,9 +21,15 @@ require_once (dirname(__FILE__).'/../include/init.php');
 		<input type="submit" value="Show Report"/>
 	</form>
 	
+	<h2>Full-text search</h2>
+	<form action="search.php" method="GET">
+		<input type="text" name="query" size="80">
+		<input type="submit" value="Search"/>
+	</form>
+	
 	<h2>All Images</h2>
-		<p>This report will show a paginated list of all images in the Flickr photostream.</p>
-		<ul><li><a href="all.php">All Images</a></li></ul>
+	<p>This report will show a paginated list of all images in the Flickr photostream.</p>
+	<ul><li><a href="all.php">All Images</a></li></ul>
 
 	<h2>By Decade</h2>
 	<p>Choose a decade to view the report for all images with taken-dates in that decade.</p>
