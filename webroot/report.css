@@ -23,6 +23,7 @@ body>ul.albums>li h4 {
 	margin-top: 0px;
 }
 
+
 table.report td.categories ul {
 	padding-left: 0px;
 }
@@ -35,13 +36,19 @@ table.report td.categories li {
 table.report td.title {
 	font-family: monospace;
 	font-size: 13px;
-	width: 264px; /* 8px per char * 33 chars */
+	width: 258px; /* ~8px per char * 33 chars */
+	max-width: 258px; /* ~8px per char * 33 chars */
+	min-width: 258px; /* ~8px per char * 33 chars */
+	overflow: scroll;
 }
 
 table.report td.description {
 	font-family: monospace;
 	font-size: 13px;
-	width: 528px; /* 8px per char * 66 chars */
+	width: 515px; /* ~8px per char * 66 chars */
+	max-width: 515px; /* ~8px per char * 66 chars */
+	min-width: 515px; /* ~8px per char * 66 chars */
+	overflow: scroll;
 }
 
 table.report .pager {
@@ -51,6 +58,7 @@ table.report .pager {
 table.report td.warnings {
 	color: darkred;
 }
+
 
 #category_area {
 	float: right;
