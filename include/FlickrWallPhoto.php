@@ -54,7 +54,7 @@ class FlickrWallPhoto {
 	}
 	
 	public function getQuoteParts() {
-		if (preg_match('/^"(.+)"\s+--(.+)$/s', $this->getDescription(), $m)) {
+		if (preg_match('/^("|”|“|&quot;)(.+)("|”|“|&quot;)\s+--(.+)$/s', $this->getDescription(), $m)) {
 			return array('quote' => $m[1], 'attribution' => $m[2]);
 		} else {
 			return FALSE;
@@ -129,7 +129,7 @@ class FlickrWallPhoto {
 		if ($len > 240)
 			$warnings[] = 'Description is '.$len.' characters, max is 240.';
 		
-		if (preg_match('/^"/', $this->getDescription()) && !$this->descriptionIsQuote())
+		if (preg_match('/^("|“|&quot;).+/', $this->getDescription()) && !$this->descriptionIsQuote())
 			$warnings[] = 'Description starts with a quotation mark, but isn\'t properly formatted as a quote.';
 		
 		$tags = $this->getNonMatchingTags();
