@@ -20,6 +20,7 @@ class PhotoPrinter {
 
 	protected $num_per_page;
 	protected $categories;
+	protected $head_html = '';
 
 	/**
 	 * Constructor
@@ -32,6 +33,16 @@ class PhotoPrinter {
 			throw new Exception('$num_per_page must be a positive integer, '.$num_per_page.' given.');
 		$this->num_per_page = $num_per_page;
 		$this->categories = $categories;
+	}
+	
+	/**
+	 * Add some HTML to the pagination head element.
+	 * 
+	 * @param string $html
+	 * @access public
+	 */
+	public function addHeadHtml ($html) {
+		$this->head_html = $html;
 	}
 	
 	/**
@@ -73,7 +84,8 @@ class PhotoPrinter {
 		$pager = $this->getPager(count($photos));
 		print "\n\t\t<tr>";
 		print "\n\t\t\t<td colspan='".count($columns)."' class='pager'>";
-		print $pager;
+		print $this->head_html;
+		print "\n\t\t\t\t<div class='pager'>".$pager."</div>";
 		print "\n\t\t\t</td>";
 		print "\n\t\t<tr>";
 		// Headings
@@ -100,7 +112,8 @@ class PhotoPrinter {
 		// Pager
 		print "\n\t\t<tr>";
 		print "\n\t\t\t<td colspan='".count($columns)."' class='pager'>";
-		print $pager;
+		print $this->head_html;
+		print "\n\t\t\t\t<div class='pager'>".$pager."</div>";
 		print "\n\t\t\t</td>";
 		print "\n\t\t<tr>";
 		print "\n\t</tfoot>";

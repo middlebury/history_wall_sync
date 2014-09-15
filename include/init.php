@@ -80,3 +80,11 @@ $now = intval(date('Y'));
 for ($i = 1900; $i <= $now; $i = $i + 10) {
 	$DECADES[] = $i;
 }
+
+$FLICKR_SORT_KEYS = array(
+	'date-posted-asc' => 'Date Uploaded - Ascending',
+	'date-posted-desc' => 'Date Uploaded - Descending',
+	'date-taken-asc' => 'Date Taken - Ascending',
+	'date-taken-desc' => 'Date Taken - Descending',
+	'relevance' => 'Search Relevance',
+);

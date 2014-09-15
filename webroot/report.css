@@ -51,8 +51,11 @@ table.report td.description {
 	overflow: scroll;
 }
 
-table.report .pager {
-	text-align: right;
+table.report .sort {
+	float: left;
+}
+table.report div.pager {
+	float: right;
 }
 
 table.report td.warnings {
