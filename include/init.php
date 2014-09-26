@@ -6,6 +6,8 @@ require_once (dirname(__FILE__).'/../include/SinglePhotoIterator.php');
 require_once (dirname(__FILE__).'/../include/PhotoSearchIterator.php');
 require_once (dirname(__FILE__).'/../include/PhotoSetIterator.php');
 require_once (dirname(__FILE__).'/../include/PhotoPrinter.php');
+require_once (dirname(__FILE__).'/../include/PhotoUpdater.php');
+require_once (dirname(__FILE__).'/../include/ArgumentParser.php');
 require_once (dirname(__FILE__).'/../config.php');
 
 
@@ -22,6 +24,18 @@ if (!empty($FLICKR_API_CACHE_TYPE)) {
 		}
 	}
 	$flickr->enableCache($FLICKR_API_CACHE_TYPE, $FLICKR_API_CACHE_LOCATION, $FLICKR_API_CACHE_LIFETIME);	
+}
+
+// Set up the image cache
+if (empty($IMAGE_CACHE_DIR)) {
+	throw new Exception('$IMAGE_CACHE_DIR must be set.');
+} else {
+	if (!file_exists($IMAGE_CACHE_DIR)) {
+		mkdir($IMAGE_CACHE_DIR);
+	}
+	if (!is_dir($IMAGE_CACHE_DIR) || !is_writeable($IMAGE_CACHE_DIR)) {
+		throw new Exception('$IMAGE_CACHE_DIR, \''.$IMAGE_CACHE_DIR.'\' must be a writeable directory.');
+	}
 }
 
 $WALL_CATEGORIES = array(

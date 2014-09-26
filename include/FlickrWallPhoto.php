@@ -40,6 +40,10 @@ class FlickrWallPhoto {
 		);
 	}
 	
+	public function getId() {
+		return $this->photo->id;
+	}
+	
 	public function getTitle () {
 		return trim($this->photo->title);
 	}
@@ -62,8 +66,16 @@ class FlickrWallPhoto {
 	}
 	
 	public function getDate() {
-		$parts = explode(' ', $this->photo->datetaken);
-		return trim($parts[0]);
+		return $this->photo->datetaken;
+	}
+	
+	public function getDecade() {
+		$date = new DateTime($this->getDate());
+		$year = intval($date->format('Y'));
+		if ($year < 1900)
+			return '1800s';
+		$decade = floor(intval($year)/10) * 10;
+		return $decade.'s';
 	}
 	
 	public function getTags() {
@@ -115,6 +127,18 @@ class FlickrWallPhoto {
 		if (in_array('wallvcropbottom', $tags))
 			return 'bottom';
 		return 'center';
+	}
+	
+	public function getOriginalUrl() {
+		if (empty($this->photo->url_o))
+			throw new Exception('Photo does not have a url_o property. Maybe it needs to be added to the search\'s "extras" field.');
+		return $this->photo->url_o;
+	}
+	
+	public function getLargeUrl() {
+		if (empty($this->photo->url_l))
+			return $this->getOriginalUrl();
+		return $this->photo->url_l;
 	}
 	
 	public function getWarnings() {

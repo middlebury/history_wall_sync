@@ -1,0 +1,44 @@
+#!/bin/env php
+<?php
+
+require_once (dirname(__FILE__).'/../include/init.php');
+
+$usage ="Usage:\n\t".$argv[0]." <decade>\n";
+$options = getOptionArray(__FILE__, $argv);
+$params = getParameterArray(__FILE__, $argv);
+
+if (!empty($options) || count($params) !== 1) {
+	print $usage;
+	exit(1);
+}
+
+if (!is_numeric($params[0])) {
+	print "decade must be an integer, e.g. '1920'.\n\n";
+	print $usage;
+	exit(1);
+}
+$decade = floor(intval($params[0])/10) * 10;
+if ($decade >= 1900) {
+	$min_date = $decade.'-01-01 00:00:00';
+	$max_date = ($decade + 9).'-12-30 23:59:59';
+} else {
+	$decade = 1800;
+	$min_date = null;
+	$max_date = '1899-12-30 23:59:59';
+}
+$sort = 'date-taken-asc';
+
+$args = array(
+	'user_id' => $FLICKR_USERID,
+	'min_taken_date' => $min_date,
+	'max_taken_date' => $max_date,
+	'sort' => $sort,
+	'extras' => 'description,date_taken,url_o,url_t,url_l,url_k,tags,machine_tags',
+);
+
+
+$updater = new PhotoUpdater($WALL_CATEGORIES, $IMAGE_CACHE_DIR);
+$updater->update(
+	new PhotoSearchIterator($flickr, $args, 0, 100)
+);
+

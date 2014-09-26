@@ -43,3 +43,9 @@ $FLICKR_API_CACHE_LIFETIME = 60;
  * Source Flickr account settings
  *********************************************************/
 $FLICKR_USERID = "119982455@N07";
+
+
+/*********************************************************
+ * Image caching directory
+ *********************************************************/
+$IMAGE_CACHE_DIR = dirname(__FILE__).'/cache';

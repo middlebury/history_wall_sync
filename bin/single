@@ -1,0 +1,44 @@
+#!/bin/env php
+<?php
+
+require_once (dirname(__FILE__).'/../include/init.php');
+
+$usage ="Usage:\n\t".$argv[0]." <flickr photo id>\n";
+$options = getOptionArray(__FILE__, $argv);
+$params = getParameterArray(__FILE__, $argv);
+
+if (!empty($options) || count($params) !== 1) {
+	print $usage;
+	exit(1);
+}
+
+$photo_id = $params[0];
+
+if (!preg_match('#^(?:https?://www.flickr.com/photos/[a-z]+/)?([0-9]+)(?:/.*)?$#', $photo_id, $m))
+	throw new Exception("The value specified doesn't look look like a photo id (integer) or photo URL.");
+
+$photo_id = intval($photo_id);
+$photos = $flickr->photos_getInfo($photo_id);
+$photo = (object)$photos['photo'];
+$sizes = $flickr->photos_getSizes($photo_id);
+
+// Set up the photo object to match the search result extras
+$photo->title = implode(' ', $photo->title);
+$photo->datetaken = $photo->dates['taken'];
+
+$tags = array();
+foreach ($photo->tags['tag'] as $tag) {
+	$tags[] = $tag['_content'];
+}
+$photo->tags = implode(' ', $tags);
+$photo->url_t = $sizes[2]['source'];
+$photo->url_l = $sizes[8]['source'];
+$photo->url_k = $sizes[10]['source'];
+$photo->url_o = $sizes[11]['source'];
+
+// var_dump($photo);
+
+
+$updater = new PhotoUpdater($WALL_CATEGORIES, $IMAGE_CACHE_DIR);
+$updater->update(new SinglePhotoIterator($photo));
+
