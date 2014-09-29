@@ -38,7 +38,10 @@ $photo->url_o = $sizes[11]['source'];
 
 // var_dump($photo);
 
+$wall_config = array(
+	'base_url' => $WALL_BASE_URL,
+);
 
-$updater = new PhotoUpdater($WALL_CATEGORIES, $IMAGE_CACHE_DIR);
+$updater = new PhotoUpdater($WALL_CATEGORIES, $IMAGE_CACHE_DIR, $wall_config);
 $updater->update(new SinglePhotoIterator($photo));
 

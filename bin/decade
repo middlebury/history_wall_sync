@@ -36,8 +36,11 @@ $args = array(
 	'extras' => 'description,date_taken,url_o,url_t,url_l,url_k,tags,machine_tags',
 );
 
+$wall_config = array(
+	'base_url' => $WALL_BASE_URL,
+);
 
-$updater = new PhotoUpdater($WALL_CATEGORIES, $IMAGE_CACHE_DIR);
+$updater = new PhotoUpdater($WALL_CATEGORIES, $IMAGE_CACHE_DIR, $wall_config);
 $updater->update(
 	new PhotoSearchIterator($flickr, $args, 0, 100)
 );

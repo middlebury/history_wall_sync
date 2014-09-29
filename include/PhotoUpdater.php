@@ -20,15 +20,20 @@ class PhotoUpdater {
 
 	protected $categories;
 	protected $image_cache_dir;
+	protected $wall_base_url;
 
 	/**
 	 * Constructor
 	 * 
 	 * @access public
 	 */
-	public function __construct (array $categories, $image_cache_dir) {
+	public function __construct (array $categories, $image_cache_dir, $wall_config) {
 		$this->categories = $categories;
 		$this->image_cache_dir = $image_cache_dir;
+		if (empty($wall_config['base_url']))
+			throw new InvalidArgumentException('$wall_config[\'base_url\'] must be specified.');
+		
+		$this->wall_base_url = $wall_config['base_url'];
 	}
 	
 	/**
@@ -99,7 +104,7 @@ class PhotoUpdater {
 			throw new Exception("Couldn't download the photo from ".$flickr_photo_url." to ".$temp_file);
 		}
 		
-		$cms_url = 'http://middlebury.dev.localprojects.net/admin/grid/new/';
+		$cms_url = $this->wall_base_url.'admin/grid/new/';
 		$data = array(
 			'active' => 'y',
 			'title' => $flickr_photo->getTitle(),
