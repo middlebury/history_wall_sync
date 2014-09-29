@@ -141,7 +141,27 @@ class FlickrWallPhoto {
 		return $this->photo->url_l;
 	}
 	
+	public function getThumbnailUrl() {
+		if (empty($this->photo->url_t))
+			return $this->getOriginalUrl();
+		return $this->photo->url_t;
+	}
+	
 	public function getWarnings() {
+		$warnings = array();
+		
+		if (preg_match('/^("|“|&quot;).+/', $this->getDescription()) && !$this->descriptionIsQuote())
+			$warnings[] = 'Description starts with a quotation mark, but isn\'t properly formatted as a quote.';
+		
+		$tags = $this->getNonMatchingTags();
+		if (count($tags)) {
+			$warnings[] = count($tags).' unknown tags will be skipped: <ul><li>'.implode('</li> <li>', $tags).'</li></ul>';
+		}
+		
+		return $warnings;
+	}
+	
+	public function getErrors() {
 		$warnings = array();
 		
 		$len = strlen($this->getTitle());
@@ -153,13 +173,6 @@ class FlickrWallPhoto {
 		if ($len > 240)
 			$warnings[] = 'Description is '.$len.' characters, max is 240.';
 		
-		if (preg_match('/^("|“|&quot;).+/', $this->getDescription()) && !$this->descriptionIsQuote())
-			$warnings[] = 'Description starts with a quotation mark, but isn\'t properly formatted as a quote.';
-		
-		$tags = $this->getNonMatchingTags();
-		if (count($tags)) {
-			$warnings[] = count($tags).' unknown tags will be skipped: <ul><li>'.implode('</li> <li>', $tags).'</li></ul>';
-		}
 		
 		return $warnings;
 	}

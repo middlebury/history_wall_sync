@@ -65,6 +65,12 @@ table.report td.warnings ul {
 	max-height: 10em;
 	overflow-y: scroll;
 }
+table.report tr.error td {
+	background-color: #FCC;
+}
+table.report td.warnings .error {
+	color: red;
+}
 
 #category_area {
 	float: right;
