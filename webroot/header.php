@@ -5,3 +5,4 @@
 		</ul>
 	</div>
 	<a href='index.php'>&laquo; Back</a>
+	<div id='messages'><?php print implode("\n<br>", $messages); ?></div>

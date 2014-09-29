@@ -10,6 +10,7 @@ require_once (dirname(__FILE__).'/../include/PhotoUpdater.php');
 require_once (dirname(__FILE__).'/../include/ArgumentParser.php');
 require_once (dirname(__FILE__).'/../config.php');
 
+$messages = array();
 
 $flickr = new phpFlickr($FLICKR_API_KEY);
 
@@ -38,6 +39,9 @@ if (empty($IMAGE_CACHE_DIR)) {
 	}
 }
 
+/*********************************************************
+ * Load categories from the wall CMS.
+ *********************************************************/
 $WALL_CATEGORIES = array(
 	"Women's Basketball",
 	"Men's Basketball",
@@ -88,6 +92,33 @@ $WALL_CATEGORIES = array(
 	"Ephemera",
 	"Illustrations",			
 );
+
+if (empty($WALL_BASE_URL)) {
+	$messages[] = 'No $WALL_BASE_URL specified, cannot load categories from CMS, using static list instead.';
+} else {
+	$category_cache = $IMAGE_CACHE_DIR.'/categories.cache';
+	if (!file_exists($category_cache) || filemtime($category_cache) < time() - 60) {
+		file_put_contents($category_cache, file_get_contents($WALL_BASE_URL.'api/tag/'));
+	}
+	if (!file_exists($category_cache) || !is_readable($category_cache)  || !filesize($category_cache)) {
+		$messages[] = 'Could not cache the category listing, using static list instead.';
+	} else {
+		$categories = json_decode(file_get_contents($category_cache), TRUE);
+		if (empty($categories['data'])) {
+			$messages[] = 'Could not decode the category listing, using static list instead.';
+		} else {
+			$WALL_CATEGORIES = array(); // Clear the static list.
+			foreach ($categories['data'] as $category) {
+				$WALL_CATEGORIES[] = $category['name'];
+			}
+		}
+	}
+}
+sort($WALL_CATEGORIES);
+
+/*********************************************************
+ * Define decades
+ *********************************************************/
 
 $DECADES = array(1800);
 $now = intval(date('Y'));
