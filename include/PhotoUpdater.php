@@ -113,12 +113,12 @@ class PhotoUpdater {
 		);
 		
 		if (strlen($data['title']) > 66) {
-			$data['title'] = substr($data['title'], 0, 66);
-			print "WARNING: Title exceeded 66 characters and had been truncated.\n";
+			print "ERROR: Title exceeded 66 characters -- skipping upload.\n\n";
+			return;
 		}
 		if (strlen($data['description']) > 240) {
-			$data['description'] = substr($data['description'], 0, 240);
-			print "WARNING: Description exceeded 240 characters and had been truncated.\n";
+			print "ERROR: Description exceeded 240 characters -- skipping upload.\n\n";
+			return;
 		}
 		
 		$curl_options = array(
