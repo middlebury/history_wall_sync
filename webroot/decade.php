@@ -3,13 +3,13 @@
 require_once (dirname(__FILE__).'/../include/init.php');
 
 $decade = floor(intval($_GET['decade'])/10) * 10;
-if ($decade >= 1900) {
+if ($decade >= 1910) {
 	$min_date = $decade.'-01-01 00:00:00';
 	$max_date = ($decade + 9).'-12-30 23:59:59';
 } else {
-	$decade = 1800;
+	$decade = 1900;
 	$min_date = null;
-	$max_date = '1899-12-30 23:59:59';
+	$max_date = '1909-12-30 23:59:59';
 }
 
 if (!empty($_GET['sort']) && in_array($_GET['sort'], array_keys($FLICKR_SORT_KEYS))) {

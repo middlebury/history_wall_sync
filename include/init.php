@@ -120,7 +120,7 @@ sort($WALL_CATEGORIES);
  * Define decades
  *********************************************************/
 
-$DECADES = array(1800);
+$DECADES = array();
 $now = intval(date('Y'));
 for ($i = 1900; $i <= $now; $i = $i + 10) {
 	$DECADES[] = $i;

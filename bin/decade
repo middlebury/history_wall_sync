@@ -18,13 +18,13 @@ if (!is_numeric($params[0])) {
 	exit(1);
 }
 $decade = floor(intval($params[0])/10) * 10;
-if ($decade >= 1900) {
+if ($decade >= 1910) {
 	$min_date = $decade.'-01-01 00:00:00';
 	$max_date = ($decade + 9).'-12-30 23:59:59';
 } else {
-	$decade = 1800;
+	$decade = 1900;
 	$min_date = null;
-	$max_date = '1899-12-30 23:59:59';
+	$max_date = '1909-12-30 23:59:59';
 }
 $sort = 'date-taken-asc';
 
