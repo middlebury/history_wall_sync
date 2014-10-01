@@ -110,10 +110,6 @@ class PhotoUpdater {
 		
 		$data = $this->getCmsPostFields($flickr_photo);
 		
-		$temp_file = $this->downloadFlickrImage($flickr_photo);
-		$filename = basename($temp_file);
-		$data['image_file'] = '@'.$temp_file.';type=image/jpeg;filename='.$filename;
-		
 		// Check field lengths
 		if (strlen($data['title']) > 66) {
 			print "ERROR: Title exceeded 66 characters -- skipping upload.\n\n";
@@ -142,10 +138,6 @@ class PhotoUpdater {
 		$cms_url = $this->wall_base_url.'admin/grid/edit/?url=%2Fadmin%2Fgrid%2F&id='.$cms_photo->id;
 		
 		$data = $this->getCmsPostFields($flickr_photo);
-		
-		$temp_file = $this->downloadFlickrImage($flickr_photo);
-		$filename = basename($temp_file);
-		$data['image_file'] = '@'.$temp_file.';type=image/jpeg;filename='.$filename;
 		
 		// Check field lengths
 		if (strlen($data['title']) > 66) {
@@ -260,6 +252,11 @@ class PhotoUpdater {
 	 * @access protected
 	 */
 	protected function getCmsPostFields (FlickrWallPhoto $flickr_photo) {
+		$temp_file = $this->downloadFlickrImage($flickr_photo);
+		$extension = pathinfo($temp_file, PATHINFO_EXTENSION);
+		$mimetype = image_type_to_mime_type(exif_imagetype($temp_file));
+		$filename = basename($temp_file);
+		
 		return array(
 			'flickr_id' => $flickr_photo->getId(),
 			'active' => 'y',
@@ -270,6 +267,7 @@ class PhotoUpdater {
 			'w_crop' => $flickr_photo->getHCrop(),
 			'image_date' => $flickr_photo->getDate(),
 			'decade' => $flickr_photo->getDecade(),
+			'image_file' => '@'.$temp_file.';type='.$mimetype.';filename='.$flickr_photo->getId().'.'.$extension,
 		);
 	}
 	
