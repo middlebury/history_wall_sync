@@ -76,8 +76,8 @@ class FlickrWallPhoto {
 	public function getDecade() {
 		$date = new DateTime($this->getDate());
 		$year = intval($date->format('Y'));
-		if ($year < 1900)
-			return '1800s';
+		if ($year < 1910)
+			return '1900s';
 		$decade = floor(intval($year)/10) * 10;
 		return $decade.'s';
 	}
