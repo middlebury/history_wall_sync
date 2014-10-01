@@ -31,10 +31,25 @@ foreach ($photo->tags['tag'] as $tag) {
 	$tags[] = $tag['_content'];
 }
 $photo->tags = implode(' ', $tags);
-$photo->url_t = $sizes[2]['source'];
-$photo->url_l = $sizes[8]['source'];
-$photo->url_k = $sizes[10]['source'];
-$photo->url_o = $sizes[11]['source'];
+
+foreach ($sizes as $size) {
+	if (preg_match('/_([tmlko])\.[a-z]+$/', $size['source'], $m)) {
+		switch ($m[1]) {
+			case 't':
+				$photo->url_t = $size['source'];
+				break;
+			case 'k':
+				$photo->url_k = $size['source'];
+				break;
+			case 'l':
+				$photo->url_l = $size['source'];
+				break;
+			case 'o':
+				$photo->url_o = $size['source'];
+				break;
+		}
+	}
+}
 
 // var_dump($photo);
 
