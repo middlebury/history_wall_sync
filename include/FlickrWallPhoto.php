@@ -69,6 +69,10 @@ class FlickrWallPhoto {
 		return $this->photo->datetaken;
 	}
 	
+	public function getLastUpdateDate() {
+		return DateTime::createFromFormat('U', $this->photo->dates['lastupdate'], new DateTimeZone('GMT'));
+	}
+	
 	public function getDecade() {
 		$date = new DateTime($this->getDate());
 		$year = intval($date->format('Y'));
