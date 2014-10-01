@@ -70,7 +70,15 @@ class FlickrWallPhoto {
 	}
 	
 	public function getLastUpdateDate() {
-		return DateTime::createFromFormat('U', $this->photo->dates['lastupdate'], new DateTimeZone('GMT'));
+		if (isset($this->photo->lastupdate))
+			$date = $this->photo->lastupdate;
+		else if (isset($this->photo->dates['lastupdate']))
+			$date = $this->photo->dates['lastupdate'];
+		else {
+			var_dump($this->photo);
+			throw new Exception('No lastupdate date available. Maybe add "last_update" to your search extras.');
+		}
+		return DateTime::createFromFormat('U', $date, new DateTimeZone('GMT'));
 	}
 	
 	public function getDecade() {

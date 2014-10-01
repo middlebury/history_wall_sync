@@ -33,7 +33,7 @@ $args = array(
 	'min_taken_date' => $min_date,
 	'max_taken_date' => $max_date,
 	'sort' => $sort,
-	'extras' => 'description,date_taken,url_o,url_t,url_l,url_k,tags,machine_tags',
+	'extras' => 'description,date_taken,url_o,url_t,url_l,url_k,tags,machine_tags,last_update',
 );
 
 $wall_config = array(
