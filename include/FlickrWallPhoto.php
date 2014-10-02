@@ -185,6 +185,8 @@ class FlickrWallPhoto {
 		if ($len > 240)
 			$warnings[] = 'Description is '.$len.' characters, max is 240.';
 		
+		if (!count($this->getCategories()))
+			$warnings[] = 'No valid categories are specified.';
 		
 		return $warnings;
 	}

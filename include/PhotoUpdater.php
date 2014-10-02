@@ -110,13 +110,12 @@ class PhotoUpdater {
 		
 		$data = $this->getCmsPostFields($flickr_photo);
 		
-		// Check field lengths
-		if (strlen($data['title']) > 66) {
-			print "ERROR: Title exceeded 66 characters -- skipping upload.\n\n";
-			return;
-		}
-		if (strlen($data['description']) > 240) {
-			print "ERROR: Description exceeded 240 characters -- skipping upload.\n\n";
+		// Check for errors
+		$errors = $flickr_photo->getErrors();
+		if (count($errors)) {
+			print "Skipping import due to the following errors:\n\t";
+			print implode("\n\t", $errors);
+			print "\n\n";
 			return;
 		}
 		
@@ -139,13 +138,12 @@ class PhotoUpdater {
 		
 		$data = $this->getCmsPostFields($flickr_photo);
 		
-		// Check field lengths
-		if (strlen($data['title']) > 66) {
-			print "ERROR: Title exceeded 66 characters -- skipping upload.\n\n";
-			return;
-		}
-		if (strlen($data['description']) > 240) {
-			print "ERROR: Description exceeded 240 characters -- skipping upload.\n\n";
+		// Check for errors
+		$errors = $flickr_photo->getErrors();
+		if (count($errors)) {
+			print "Skipping import due to the following errors:\n\t";
+			print implode("\n\t", $errors);
+			print "\n";
 			return;
 		}
 		
