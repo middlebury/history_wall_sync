@@ -215,6 +215,11 @@ class PhotoUpdater {
 			$data['auth_token'] = $this->wall_auth_token;
 		}
 		
+		// The form now wants dates without the time portion (00:00:00), so trim that off.
+		if (!empty($data['image_date'])) {
+			$data['image_date'] = preg_replace('/^([0-9]{4}-[0-9]{2}-[0-9]{2}) ([0-9]{2}:[0-9]{2}:[0-9]{2})$/', '\1', $data['image_date']);
+		}
+		
 		$curl_options = array(
 			CURLOPT_URL => $cms_url,
 			CURLOPT_POST => true,
