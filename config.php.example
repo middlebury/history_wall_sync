@@ -55,3 +55,4 @@ $IMAGE_CACHE_DIR = dirname(__FILE__).'/cache';
  * History Wall Configuration
  *********************************************************/
 $WALL_BASE_URL = 'http://wall.example.net/';
+$WALL_AUTH_TOKEN = '';

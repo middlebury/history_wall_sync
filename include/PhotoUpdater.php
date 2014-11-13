@@ -21,6 +21,7 @@ class PhotoUpdater {
 	protected $categories;
 	protected $image_cache_dir;
 	protected $wall_base_url;
+	protected $wall_auth_token = null;
 
 	/**
 	 * Constructor
@@ -34,6 +35,7 @@ class PhotoUpdater {
 			throw new InvalidArgumentException('$wall_config[\'base_url\'] must be specified.');
 		
 		$this->wall_base_url = $wall_config['base_url'];
+		$this->wall_auth_token = $wall_config['auth_token'];
 	}
 	
 	/**
@@ -209,6 +211,10 @@ class PhotoUpdater {
 	 * @access protected
 	 */
 	protected function postToCms ($cms_url, $data) {
+		if (!empty($this->wall_auth_token)) {
+			$data['auth_token'] = $this->wall_auth_token;
+		}
+		
 		$curl_options = array(
 			CURLOPT_URL => $cms_url,
 			CURLOPT_POST => true,

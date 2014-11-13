@@ -55,6 +55,7 @@ foreach ($sizes as $size) {
 
 $wall_config = array(
 	'base_url' => $WALL_BASE_URL,
+	'auth_token' => $WALL_AUTH_TOKEN,
 );
 
 $updater = new PhotoUpdater($WALL_CATEGORIES, $IMAGE_CACHE_DIR, $wall_config);
