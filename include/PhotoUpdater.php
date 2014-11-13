@@ -99,6 +99,42 @@ class PhotoUpdater {
 	}
 	
 	/**
+	 * Look up a CMS asset by id.
+	 * 
+	 * @param string $cms_asset_id
+	 * @return mixed object or FALSE
+	 * @access protected
+	 */
+	protected function getCmsAsset ($cms_asset_id) {
+		// for now, just return FALSE
+		$this->loadCmsAssets();
+		if (isset($this->cms_assets[$cms_asset_id]))
+			return $this->cms_assets[$cms_asset_id];
+		else
+			return FALSE;
+	}
+	
+	/**
+	 * Load photo-info from the CMS.
+	 * 
+	 * @access protected
+	 */
+	protected function loadCmsAssets () {
+		if (!isset($this->cms_assets)) {
+			$cms_url = $this->wall_base_url.'api/assets/';
+			$json = file_get_contents($cms_url);
+			if (empty($json))
+				throw new Exception('Could not load the list of asset images from the CMS at '.$cms_url);
+			$results = json_decode($json);
+			$assets = $results->data;
+			$this->cms_assets = array();
+			foreach ($assets as $asset) {
+				$this->cms_assets[$asset->id] = $asset;
+			}
+		}
+	}
+	
+	/**
 	 * Create a new CmsPhoto from a flickr photo
 	 * 
 	 * @param FlickrWallPhoto $flickr_photo
@@ -110,7 +146,8 @@ class PhotoUpdater {
 		
 		$cms_url = $this->wall_base_url.'admin/grid/new/';
 		
-		$data = $this->getCmsPostFields($flickr_photo);
+		$data = $this->getCmsMetadataPostFields($flickr_photo);
+		$data['image_file'] = $this->getCmsImagePostData($flickr_photo);
 		
 		// Check for errors
 		$errors = $flickr_photo->getErrors();
@@ -138,7 +175,7 @@ class PhotoUpdater {
 		
 		$cms_url = $this->wall_base_url.'admin/grid/edit/?url=%2Fadmin%2Fgrid%2F&id='.$cms_photo->id;
 		
-		$data = $this->getCmsPostFields($flickr_photo);
+		$data = $this->getCmsMetadataPostFields($flickr_photo);
 		
 		// Check for errors
 		$errors = $flickr_photo->getErrors();
@@ -191,15 +228,35 @@ class PhotoUpdater {
 			print "	the Flickr update date is later than the CMS update date.\n";
 			$changed = TRUE;
 		}
-		
+
 		if ($changed) {
 			print "Changes detected, updating...\n";
 			$this->postToCms($cms_url, $data);
+			$this->updateCmsAsset($cms_photo->image->id, $flickr_photo);
 		} else {
 			print "No changes detected, skipping update.\n";
 		}
 		
 		print "\n";
+	}
+	
+	/**
+	 * Update an asset in the CMS by id
+	 *
+	 * @param string $cms_asset_id
+	 * @param FlickrWallPhoto $flickr_photo 
+	 * @return null
+	 */
+	private function updateCmsAsset ($cms_asset_id, FlickrWallPhoto $flickr_photo) {
+		$cms_url = $this->wall_base_url.'admin/assets/edit/?url=%2Fadmin%2Fassets%2F%3Fsort%3D3%26desc%3D1&id='.$cms_asset_id;
+		$cms_asset = $this->getCmsAsset($cms_asset_id);
+		$data = array(
+			'title' => $cms_asset->title,
+			'path_prefix' => $cms_asset->path_prefix,
+			'active' => $cms_asset->active ? '1':'',
+			'uri' => $this->getCmsImagePostData($flickr_photo),
+		);
+		$this->postToCms($cms_url, $data);
 	}
 	
 	/**
@@ -260,12 +317,7 @@ class PhotoUpdater {
 	 * @return array
 	 * @access protected
 	 */
-	protected function getCmsPostFields (FlickrWallPhoto $flickr_photo) {
-		$temp_file = $this->downloadFlickrImage($flickr_photo);
-		$extension = pathinfo($temp_file, PATHINFO_EXTENSION);
-		$mimetype = image_type_to_mime_type(exif_imagetype($temp_file));
-		$filename = basename($temp_file);
-		
+	protected function getCmsMetadataPostFields (FlickrWallPhoto $flickr_photo) {
 		return array(
 			'flickr_id' => $flickr_photo->getId(),
 			'active' => 'y',
@@ -276,8 +328,23 @@ class PhotoUpdater {
 			'w_crop' => $flickr_photo->getHCrop(),
 			'image_date' => $flickr_photo->getDate(),
 			'decade' => $flickr_photo->getDecade(),
-			'image_file' => '@'.$temp_file.';type='.$mimetype.';filename='.$flickr_photo->getId().'.'.$extension,
 		);
+	}
+	
+	/**
+	 * Answer the POST field for a file-upload.
+	 *
+	 * @param FlickrWallPhoto $flickr_photo
+	 * @return array
+	 * @access protected
+	 */
+	protected function getCmsImagePostData (FlickrWallPhoto $flickr_photo) {
+		$temp_file = $this->downloadFlickrImage($flickr_photo);
+		$extension = pathinfo($temp_file, PATHINFO_EXTENSION);
+		$mimetype = image_type_to_mime_type(exif_imagetype($temp_file));
+		$filename = basename($temp_file);
+		
+		return '@'.$temp_file.';type='.$mimetype.';filename='.$flickr_photo->getId().'.'.$extension;
 	}
 	
 	/**
