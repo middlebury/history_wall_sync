@@ -204,7 +204,10 @@ class PhotoUpdater {
 //			print "	title has changed.\n";
 // 			$changed = TRUE;
 // 		}
-		if ($cms_photo->image_date != $data['image_date']) {
+		// The form now wants dates without the time portion (00:00:00), so only compare the date and not the time.
+		$cms_image_date = preg_replace('/^([0-9]{4}-[0-9]{2}-[0-9]{2}) ([0-9]{2}:[0-9]{2}:[0-9]{2})$/', '\1 ', $cms_photo->image_date);
+		$flickr_image_date = preg_replace('/^([0-9]{4}-[0-9]{2}-[0-9]{2}) ([0-9]{2}:[0-9]{2}:[0-9]{2})$/', '\1 ', $data['image_date']);
+		if ($cms_image_date != $flickr_image_date) {
 			print "	image_date has changed.\n";
 			$changed = TRUE;
 		}
