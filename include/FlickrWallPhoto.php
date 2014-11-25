@@ -45,12 +45,28 @@ class FlickrWallPhoto {
 	}
 	
 	public function getTitle () {
-		return trim($this->photo->title);
+		$title = trim($this->photo->title);
+		$title = str_replace('&quot;', '"', $title);
+		$title = str_replace('&ldquo;', '“', $title);
+		$title = str_replace('&rdquo;', '”', $title);
+		$title = str_replace('&#39;', "'", $title);
+		$title = str_replace('&lsquo;', '‘', $title);
+		$title = str_replace('&rsquo;', '’', $title);
+		$title = str_replace('&amp;', '&', $title);
+		return $title;
 	}
 	
 	public function getDescription () {
 		$parts = explode('----', $this->photo->description['_content']);
-		return trim($parts[0]);
+		$description = trim($parts[0]);
+		$description = str_replace('&quot;', '"', $description);
+		$description = str_replace('&ldquo;', '“', $description);
+		$description = str_replace('&rdquo;', '”', $description);
+		$description = str_replace('&#39;', "'", $description);
+		$description = str_replace('&lsquo;', '‘', $description);
+		$description = str_replace('&rsquo;', '’', $description);
+		$description = str_replace('&amp;', '&', $description);
+		return $description;
 	}
 	
 	public function descriptionIsQuote() {
