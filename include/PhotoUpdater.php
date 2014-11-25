@@ -85,6 +85,11 @@ class PhotoUpdater {
 			if (empty($json))
 				throw new Exception('Could not load the list of grid images from the CMS at '.$cms_url);
 			$results = json_decode($json);
+			if (!is_object($results)) {
+				ob_start();
+				var_dump($json);
+				throw new Exception('json_decode failed for '.$cms_url.' : '.ob_get_clean());
+			}
 			$this->cms_photos = $results->data;
 			$this->cms_photo_map = array();
 			foreach ($this->cms_photos as $cms_id => $cms_photo) {
