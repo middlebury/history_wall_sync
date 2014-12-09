@@ -20,13 +20,13 @@ require_once (dirname(__FILE__).'/../include/init.php');
 		<br><input type="text" name="photo" size="80">
 		<input type="submit" value="Show Report"/>
 	</form>
-	
+
 	<h2>Full-text search</h2>
 	<form action="search.php" method="GET">
 		<input type="text" name="query" size="80">
 		<input type="submit" value="Search"/>
 	</form>
-	
+
 	<h2>All Images</h2>
 	<p>This report will show a paginated list of all images in the Flickr photostream.</p>
 	<ul><li><a href="all.php">All Images</a></li></ul>
@@ -58,7 +58,7 @@ foreach ($photosets['photoset'] as $photoset) {
 	print "\n\t\t</a>";
 	print " (".$photoset->photos." photos)";
 	print "\n\t</h4>";
-	print "\n\t<p>".nl2br(htmlspecialchars(implode(' ', $photoset->description)))."</p>";	
+	print "\n\t<p>".nl2br(htmlspecialchars(implode(' ', $photoset->description)))."</p>";
 	print "\n</li>";
 }
 ?>
@@ -92,7 +92,7 @@ foreach ($photosets['photoset'] as $photoset) {
 // 	print $i;
 // 	var_dump($photos[$i]);
 // }
-// 
+//
 // print "<hr/>";
 // var_dump($photos);
 
@@ -106,7 +106,7 @@ foreach ($photosets['photoset'] as $photoset) {
 // foreach($photos as $photo) {
 // 	var_dump($photo);
 // }
-// 
+//
 // print "<hr/>";
 // var_dump($photos);
 
@@ -116,7 +116,7 @@ foreach ($photosets['photoset'] as $photoset) {
 // 	'extras' => 'description,date_taken,url_o,tags,machine_tags',
 // );
 // $pager = new phpFlickr_pager($flickr, 'flickr.photos.search', $args);
-// 
+//
 // for ($i = 0; $i < 1; $i++) {
 // 	var_dump ($pager->next());
 // }

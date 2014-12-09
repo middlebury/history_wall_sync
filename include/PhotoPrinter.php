@@ -1,18 +1,18 @@
 <?php
 /**
  * @package history_wall_sync
- * 
+ *
  * @copyright Copyright &copy; 2014, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- */ 
+ */
 
 require_once(dirname(__FILE__).'/FlickrWallPhoto.php');
 
 /**
  * An iterator class for performing photo searches.
- * 
+ *
  * @package history_wall_sync
- * 
+ *
  * @copyright Copyright &copy; 2014, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  */
@@ -24,7 +24,7 @@ class PhotoPrinter {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param optional int $num_per_page
 	 * @access public
 	 */
@@ -34,20 +34,20 @@ class PhotoPrinter {
 		$this->num_per_page = $num_per_page;
 		$this->categories = $categories;
 	}
-	
+
 	/**
 	 * Add some HTML to the pagination head element.
-	 * 
+	 *
 	 * @param string $html
 	 * @access public
 	 */
 	public function addHeadHtml ($html) {
 		$this->head_html = $html;
 	}
-	
+
 	/**
 	 * Answer the current page number
-	 * 
+	 *
 	 * @return int
 	 * @access public
 	 */
@@ -57,20 +57,20 @@ class PhotoPrinter {
 		else
 			return 1;
 	}
-	
+
 	/**
 	 * Answer the zero-based offset of the first image on this page.
-	 * 
+	 *
 	 * @return int
 	 * @access public
 	 */
 	public function getStartingPhotoOffset () {
 		return $this->num_per_page * ($this->getCurrentPage() - 1);
 	}
-	
+
 	/**
 	 * Print out the table for a PhotoIterator
-	 * 
+	 *
 	 * @param PhotoIterator $photos
 	 * @return null
 	 * @access public
@@ -78,7 +78,7 @@ class PhotoPrinter {
 	public function output (PhotoIterator $photos) {
 		$columns = $this->getColumnHeaders();
 		print "\n<table border='1' class='report'>";
-		
+
 		print "\n\t<thead>";
 		// Pager
 		$pager = $this->getPager(count($photos));
@@ -95,7 +95,7 @@ class PhotoPrinter {
 		}
 		print "\n\t\t<tr>";
 		print "\n\t</thead>";
-		
+
 		print "\n\t<tbody>";
 		$last_photo_offset = min(count($photos) - 1, $this->getStartingPhotoOffset() + $this->num_per_page - 1);
 		for ($i = $this->getStartingPhotoOffset(); $i <= $last_photo_offset; $i++) {
@@ -106,14 +106,14 @@ class PhotoPrinter {
 				print "\n\t\t<tr>";
 			else
 				print "\n\t\t<tr class='error'>";
-			
+
 			foreach ($columns as $class => $column) {
 				print "\n\t\t\t<td class='".$class."'>".$this->getPhotoDatum($class, $wall_photo)."</td>";
 			}
 			print "\n\t\t</tr>";
 		}
 		print "\n\t</tbody>";
-		
+
 		print "\n\t<tfoot>";
 		// Pager
 		print "\n\t\t<tr>";
@@ -123,13 +123,13 @@ class PhotoPrinter {
 		print "\n\t\t\t</td>";
 		print "\n\t\t<tr>";
 		print "\n\t</tfoot>";
-		
+
 		print "\n</table>";
 	}
-	
+
 	/**
 	 * Answer a pager.
-	 * 
+	 *
 	 * @param $total
 	 * @return string
 	 * @access protected
@@ -138,7 +138,7 @@ class PhotoPrinter {
 		$links = array();
 		$path = $_SERVER['SCRIPT_NAME'];
 		parse_str($_SERVER['QUERY_STRING'], $args);
-		
+
 		$pages = ceil($total / $this->num_per_page);
 		$current = $this->getCurrentPage();
 		for ($i = 1; $i <= $pages; $i++) {
@@ -152,10 +152,10 @@ class PhotoPrinter {
 		}
 		return 'Page: '.implode(' ', $links);
 	}
-	
+
 	/**
 	 * Anser the column headers.
-	 * 
+	 *
 	 * @return array
 	 * @access protected
 	 */
@@ -171,10 +171,10 @@ class PhotoPrinter {
 // 			'raw' => 'Raw',
 		);
 	}
-	
+
 	/**
 	 * Answer a datum for a photo
-	 * 
+	 *
 	 * @param string $field
 	 * @param FlickrWallPhoto $wall_photo
 	 * @return string

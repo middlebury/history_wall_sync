@@ -1,18 +1,18 @@
 <?php
 /**
  * @package history_wall_sync
- * 
+ *
  * @copyright Copyright &copy; 2014, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
- */ 
+ */
 
 require_once(dirname(__FILE__).'/FlickrWallPhoto.php');
 
 /**
  * A
- * 
+ *
  * @package history_wall_sync
- * 
+ *
  * @copyright Copyright &copy; 2014, Middlebury College
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License (GPL)
  */
@@ -26,7 +26,7 @@ class PhotoUpdater {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @access public
 	 */
 	public function __construct (array $categories, $image_cache_dir, $wall_config) {
@@ -34,15 +34,15 @@ class PhotoUpdater {
 		$this->image_cache_dir = $image_cache_dir;
 		if (empty($wall_config['base_url']))
 			throw new InvalidArgumentException('$wall_config[\'base_url\'] must be specified.');
-		
+
 		$this->wall_base_url = $wall_config['base_url'];
 		$this->wall_auth_token = $wall_config['auth_token'];
 		$this->source_flickr_ids = array();
 	}
-	
+
 	/**
 	 * Print out the table for a PhotoIterator
-	 * 
+	 *
 	 * @param PhotoIterator $photos
 	 * @return null
 	 * @access public
@@ -98,7 +98,7 @@ class PhotoUpdater {
 
 	/**
 	 * Look up a CMS photo by id.
-	 * 
+	 *
 	 * @param string $flickr_id
 	 * @return mixed object or FALSE
 	 * @access protected
@@ -111,10 +111,10 @@ class PhotoUpdater {
 		else
 			return FALSE;
 	}
-	
+
 	/**
 	 * Load photo-info from the CMS.
-	 * 
+	 *
 	 * @access protected
 	 */
 	protected function loadCmsPhotos () {
@@ -141,10 +141,10 @@ class PhotoUpdater {
 			}
 		}
 	}
-	
+
 	/**
 	 * Look up a CMS asset by id.
-	 * 
+	 *
 	 * @param string $cms_asset_id
 	 * @return mixed object or FALSE
 	 * @access protected
@@ -157,10 +157,10 @@ class PhotoUpdater {
 		else
 			return FALSE;
 	}
-	
+
 	/**
 	 * Load photo-info from the CMS.
-	 * 
+	 *
 	 * @access protected
 	 */
 	protected function loadCmsAssets () {
@@ -177,22 +177,22 @@ class PhotoUpdater {
 			}
 		}
 	}
-	
+
 	/**
 	 * Create a new CmsPhoto from a flickr photo
-	 * 
+	 *
 	 * @param FlickrWallPhoto $flickr_photo
 	 * @return null
 	 * @access protected
 	 */
 	protected function createCmsPhoto (FlickrWallPhoto $flickr_photo) {
 		print "Creating ".$flickr_photo->getId()." \"".$flickr_photo->getTitle()."\"\n";
-		
+
 		$cms_url = $this->wall_base_url.'admin/grid/new/';
-		
+
 		$data = $this->getCmsMetadataPostFields($flickr_photo);
 		$data['image_file'] = $this->getCmsImagePostData($flickr_photo);
-		
+
 		// Check for errors
 		$errors = $flickr_photo->getErrors();
 		if (count($errors)) {
@@ -201,26 +201,26 @@ class PhotoUpdater {
 			print "\n\n";
 			return;
 		}
-		
+
 		$this->postToCms($cms_url, $data);
-		
+
 		print "\n";
 	}
-	
+
 	/**
 	 * Update a CmsPhoto from a flickr photo
-	 * 
+	 *
 	 * @param FlickrWallPhoto $flickr_photo
 	 * @return null
 	 * @access protected
 	 */
 	protected function updateCmsPhoto (FlickrWallPhoto $flickr_photo, $cms_photo) {
 		print "Evaluating for update: ".$flickr_photo->getId()." \"".$flickr_photo->getTitle()."\"\n";
-		
+
 		$cms_url = $this->wall_base_url.'admin/grid/edit/?url=%2Fadmin%2Fgrid%2F&id='.$cms_photo->id;
-		
+
 		$data = $this->getCmsMetadataPostFields($flickr_photo);
-		
+
 		// Check for errors
 		$errors = $flickr_photo->getErrors();
 		if (count($errors)) {
@@ -229,7 +229,7 @@ class PhotoUpdater {
 			print "\n";
 			return;
 		}
-		
+
 		// Identify if the image has changed, skip if unchanged.
 		$changed = FALSE;
 		if ($cms_photo->title != $data['title']) {
@@ -283,15 +283,15 @@ class PhotoUpdater {
 		} else {
 			print "No changes detected, skipping update.\n";
 		}
-		
+
 		print "\n";
 	}
-	
+
 	/**
 	 * Update an asset in the CMS by id
 	 *
 	 * @param string $cms_asset_id
-	 * @param FlickrWallPhoto $flickr_photo 
+	 * @param FlickrWallPhoto $flickr_photo
 	 * @return null
 	 */
 	private function updateCmsAsset ($cms_asset_id, FlickrWallPhoto $flickr_photo) {
@@ -305,10 +305,10 @@ class PhotoUpdater {
 		);
 		$this->postToCms($cms_url, $data);
 	}
-	
+
 	/**
 	 * Post data to the CMS
-	 * 
+	 *
 	 * @param string $cms_url The URL to POST to
 	 * @param array $data The data to POST
 	 * @return boolean TRUE on success
@@ -318,12 +318,12 @@ class PhotoUpdater {
 		if (!empty($this->wall_auth_token)) {
 			$data['auth_token'] = $this->wall_auth_token;
 		}
-		
+
 		// The form now wants dates without the time portion (00:00:00), so trim that off.
 		if (!empty($data['image_date'])) {
 			$data['image_date'] = preg_replace('/^([0-9]{4}-[0-9]{2}-[0-9]{2}) ([0-9]{2}:[0-9]{2}:[0-9]{2})$/', '\1', $data['image_date']);
 		}
-		
+
 		$curl_options = array(
 			CURLOPT_URL => $cms_url,
 			CURLOPT_POST => true,
@@ -343,7 +343,7 @@ class PhotoUpdater {
 		}
 		$response_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 		curl_close ($curl);
-		
+
 		if ($response_code == 302) {
 			print "   ...done.\n";
 		} else if ($response_code == 413) {
@@ -353,13 +353,13 @@ class PhotoUpdater {
 			print "   ...ERROR:\n".$result;
 			exit(2);
 		}
-		
+
 		return TRUE;
 	}
-	
+
 	/**
 	 * Answer an array of data fields to send to the CMS.
-	 * 
+	 *
 	 * @param FlickrWallPhoto $flickr_photo
 	 * @return array
 	 * @access protected
@@ -377,7 +377,7 @@ class PhotoUpdater {
 			'decade' => $flickr_photo->getDecade(),
 		);
 	}
-	
+
 	/**
 	 * Answer the POST field for a file-upload.
 	 *
@@ -390,13 +390,13 @@ class PhotoUpdater {
 		$extension = pathinfo($temp_file, PATHINFO_EXTENSION);
 		$mimetype = image_type_to_mime_type(exif_imagetype($temp_file));
 		$filename = basename($temp_file);
-		
+
 		return '@'.$temp_file.';type='.$mimetype.';filename='.$flickr_photo->getId().'.'.$extension;
 	}
-	
+
 	/**
 	 * Download the image file for a flickr photo.
-	 * 
+	 *
 	 * @param FlickrWallPhoto $flickr_photo
 	 * @return string The temporary file name.
 	 * @access protected
@@ -405,18 +405,18 @@ class PhotoUpdater {
 		$flickr_photo_url = $flickr_photo->getLargeUrl();
 		$filename = basename($flickr_photo_url);
 		$temp_file = realpath($this->image_cache_dir).'/'.$filename;
-		
+
 		// Download the image_file temporarily
 		if (!file_exists($temp_file) || !filesize($temp_file)) {
 			print "Downloading from flickr:\n\tFrom:\t".$flickr_photo_url."\n\tTo:\t".$temp_file."\n";
 			$flickr_photo_handle = fopen($flickr_photo_url, 'rb');
-			
+
 			if (!$flickr_photo_handle)
 				throw new Exception("Could not open $flickr_photo_handle for reading.");
 			$temp_file_handle = fopen($temp_file, 'wb');
 			if (!$temp_file_handle)
 				throw new Exception("Could not open $temp_file for writing.");
-			
+
 			while (!feof($flickr_photo_handle)) {
 				fwrite($temp_file_handle, fread($flickr_photo_handle, 8192));
 			}
@@ -427,7 +427,7 @@ class PhotoUpdater {
 		if (!file_exists($temp_file) || !filesize($temp_file)) {
 			throw new Exception("Couldn't download the photo from ".$flickr_photo_url." to ".$temp_file);
 		}
-		
+
 		return $temp_file;
 	}
 }

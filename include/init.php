@@ -24,7 +24,7 @@ if (!empty($FLICKR_API_CACHE_TYPE)) {
 			mkdir($FLICKR_API_CACHE_LOCATION);
 		}
 	}
-	$flickr->enableCache($FLICKR_API_CACHE_TYPE, $FLICKR_API_CACHE_LOCATION, $FLICKR_API_CACHE_LIFETIME);	
+	$flickr->enableCache($FLICKR_API_CACHE_TYPE, $FLICKR_API_CACHE_LOCATION, $FLICKR_API_CACHE_LIFETIME);
 }
 
 // Set up the image cache
@@ -90,7 +90,7 @@ $WALL_CATEGORIES = array(
 	"Campus Life",
 	"Intramurals",
 	"Ephemera",
-	"Illustrations",			
+	"Illustrations",
 );
 
 if (empty($WALL_BASE_URL)) {

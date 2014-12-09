@@ -38,11 +38,11 @@ $photo->url_0 = $sizes[11]['source'];
 </head>
 <body>
 	<?php include(dirname(__FILE__).'/header.php'); ?>
-	
+
 	<h1>Middlebury Flickr - History Wall Report</h1>
 	<h2>Single Photo: <?php print htmlspecialchars($photo->title); ?></h2>
 
-	
+
 <?php
 
 

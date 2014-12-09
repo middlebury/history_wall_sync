@@ -19,10 +19,10 @@ if (!empty($_GET['sort']) && in_array($_GET['sort'], array_keys($FLICKR_SORT_KEY
 </head>
 <body>
 	<?php include(dirname(__FILE__).'/header.php'); ?>
-	
+
 	<h1>Middlebury Flickr - History Wall Report</h1>
 	<h2>Search: <?php print htmlentities($term);?></h2>
-	
+
 <?php
 
 $args = array(

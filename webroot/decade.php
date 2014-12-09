@@ -27,10 +27,10 @@ if (!empty($_GET['sort']) && in_array($_GET['sort'], array_keys($FLICKR_SORT_KEY
 </head>
 <body>
 	<?php include(dirname(__FILE__).'/header.php'); ?>
-	
+
 	<h1>Middlebury Flickr - History Wall Report</h1>
 	<h2>Decade: <?php print $decade;?>s &nbsp; (<?php print $min_date.' to '.$max_date; ?>)</h2>
-	
+
 	<div class='decades'>
 	<?php
 		foreach ($DECADES as $dec) {
@@ -38,7 +38,7 @@ if (!empty($_GET['sort']) && in_array($_GET['sort'], array_keys($FLICKR_SORT_KEY
 		}
 	?>
 	</div>
-	
+
 <?php
 
 $args = array(

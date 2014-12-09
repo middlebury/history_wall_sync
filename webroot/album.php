@@ -16,10 +16,10 @@ $photoset = (object)$flickr->photosets_getInfo($photoset_id);
 </head>
 <body>
 	<?php include(dirname(__FILE__).'/header.php'); ?>
-	
+
 	<h1>Middlebury Flickr - History Wall Report</h1>
 	<h2>Album: <?php print htmlspecialchars(implode(' ', $photoset->title)); ?></h2>
-	
+
 <?php
 
 $args = array(
