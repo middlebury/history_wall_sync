@@ -22,6 +22,7 @@ class PhotoUpdater {
 	protected $image_cache_dir;
 	protected $wall_base_url;
 	protected $wall_auth_token = null;
+	protected $source_flickr_ids;
 
 	/**
 	 * Constructor
@@ -36,6 +37,7 @@ class PhotoUpdater {
 		
 		$this->wall_base_url = $wall_config['base_url'];
 		$this->wall_auth_token = $wall_config['auth_token'];
+		$this->source_flickr_ids = array();
 	}
 	
 	/**
@@ -48,6 +50,7 @@ class PhotoUpdater {
 	public function update (PhotoIterator $photos) {
 		foreach ($photos as $photo) {
 			$flickr_photo = new FlickrWallPhoto($photo, $this->categories);
+			$this->source_flickr_ids[] = $flickr_photo->getId();
 			$cms_photo = $this->getCmsPhoto($flickr_photo->getId());
 			if ($cms_photo) {
 				$this->updateCmsPhoto($flickr_photo, $cms_photo);
@@ -56,7 +59,43 @@ class PhotoUpdater {
 			}
 		}
 	}
-	
+
+	/**
+	 * Delete photos that were not in the input list.
+	 *
+	 * @return nul
+	 */
+	function deletePhotosNotInSource () {
+		print "\nComparing photos for delete...\n";
+
+		$this->loadCmsPhotos();
+		if (empty($this->cms_photo_map))
+			throw new Exception('No CMS photos loaded, not deleting.');
+		if (empty($this->source_flickr_ids))
+			throw new Exception('No Flickr photos in search, not deleting.');
+
+		$to_delete = array();
+		foreach ($this->cms_photo_map as $flickr_id => $cms_photo) {
+			if (!in_array($flickr_id, $this->source_flickr_ids)) {
+				$to_delete[] = $cms_photo;
+			}
+		}
+
+		if (count($to_delete) > (count($this->cms_photo_map) * 0.20))
+			throw new Exception("\nWARNING!!!\nTrying to delete more than 20% of the CMS photos. Something may have gone wrong -- not deleting.");
+
+		if (empty($to_delete)) {
+			print "No photos to delete from the CMS.\n";
+		} else {
+			$cms_url = $this->wall_base_url.'admin/grid/delete/';
+			foreach ($to_delete as $cms_photo) {
+				print "Deleting ".$cms_photo->id." '".$cms_photo->title."'. Flickr id ".$cms_photo->flickr_id." wasn't in the source.\n";
+				$data = array();
+				$this->postToCms($cms_url.'?id='.$cms_photo->id, $data);
+			}
+		}
+	}
+
 	/**
 	 * Look up a CMS photo by id.
 	 * 

@@ -30,3 +30,4 @@ $updater->update(
 	new PhotoSearchIterator($flickr, $args, 0, 100)
 );
 
+$updater->deletePhotosNotInSource();
