@@ -120,7 +120,13 @@ class PhotoUpdater {
 	protected function loadCmsPhotos () {
 		if (!isset($this->cms_photos)) {
 			$cms_url = $this->wall_base_url.'api/grid/';
-			$json = file_get_contents($cms_url);
+			$opts = array(
+				'http' => array(
+					'timeout' => 600,
+				),
+			);
+			$context = stream_context_create($opts);
+			$json = file_get_contents($cms_url, false, $context);
 			if (empty($json))
 				throw new Exception('Could not load the list of grid images from the CMS at '.$cms_url);
 			$results = json_decode($json);
