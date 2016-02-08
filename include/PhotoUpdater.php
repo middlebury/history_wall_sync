@@ -68,6 +68,7 @@ class PhotoUpdater {
 			} catch (Exception $e) {
 				ob_end_flush();
 				print $e->getMessage()."\n";
+				Mailer::send($e->getMessage()."\n\nFlickr URL: https://www.flickr.com/photos/middarchive/".$flickr_photo->getId());
 			}
 		}
 

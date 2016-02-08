@@ -8,6 +8,7 @@ require_once (dirname(__FILE__).'/../include/PhotoSetIterator.php');
 require_once (dirname(__FILE__).'/../include/PhotoPrinter.php');
 require_once (dirname(__FILE__).'/../include/PhotoUpdater.php');
 require_once (dirname(__FILE__).'/../include/ArgumentParser.php');
+require_once (dirname(__FILE__).'/../include/Mailer.php');
 require_once (dirname(__FILE__).'/../config.php');
 
 $messages = array();

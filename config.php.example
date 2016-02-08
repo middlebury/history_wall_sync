@@ -56,3 +56,8 @@ $IMAGE_CACHE_DIR = dirname(__FILE__).'/cache';
  *********************************************************/
 $WALL_BASE_URL = 'http://wall.example.net/';
 $WALL_AUTH_TOKEN = '';
+
+/*********************************************************
+ * Error Reporting.
+ *********************************************************/
+Mailer::addTo('user@example.edu');
