@@ -84,7 +84,7 @@ class PhotoUpdater {
 	}
 
 	function printSummary() {
-		print date('c').sprintf(" %d Flick Photos Evaluated, %d skipped due to data errors, %d had no changes, %d created, %d updated, %d deleted, %d errors.\n", $this->total_evaluated, $this->num_skipped, $this->num_no_changes, $this->num_created, $this->num_updated, $this->num_deleted, $this->num_errors);
+		print date('c').sprintf(" %d Flickr Photos Evaluated, %d skipped due to data errors, %d had no changes, %d created, %d updated, %d deleted, %d errors.\n", $this->total_evaluated, $this->num_skipped, $this->num_no_changes, $this->num_created, $this->num_updated, $this->num_deleted, $this->num_errors);
 	}
 
 	/**
