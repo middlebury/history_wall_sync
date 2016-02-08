@@ -40,3 +40,5 @@ $updater->update(
 $updater->deletePhotosNotInSource();
 
 $updater->printSummary();
+
+file_put_contents(dirname(dirname(__FILE__)).'/webroot/skipped.txt', implode("\n", $updater->getSkipped()));

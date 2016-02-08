@@ -61,3 +61,5 @@ $WALL_AUTH_TOKEN = '';
  * Error Reporting.
  *********************************************************/
 Mailer::addTo('user@example.edu');
+
+// $REMOTE_SKIPPED_FILE = 'http://host.domain.edu/history_wall_sync/skipped.txt';

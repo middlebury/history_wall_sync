@@ -27,6 +27,10 @@ require_once (dirname(__FILE__).'/../include/init.php');
 		<input type="submit" value="Search"/>
 	</form>
 
+	<h2>Skipped Images</h2>
+	<p>This report will show a paginated list of images in the Flickr photostream that were skipped during the last sync process due to data errors.</p>
+	<ul><li><a href="skipped.php">Skipped Images</a></li></ul>
+
 	<h2>All Images</h2>
 	<p>This report will show a paginated list of all images in the Flickr photostream.</p>
 	<ul><li><a href="all.php">All Images</a></li></ul>
@@ -120,5 +124,3 @@ foreach ($photosets['photoset'] as $photoset) {
 // for ($i = 0; $i < 1; $i++) {
 // 	var_dump ($pager->next());
 // }
-
-

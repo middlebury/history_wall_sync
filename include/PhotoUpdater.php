@@ -33,6 +33,8 @@ class PhotoUpdater {
 	protected $num_deleted = 0;
 	protected $num_errors = 0;
 
+	protected $skipped = array();
+
 	/**
 	 * Constructor
 	 *
@@ -133,6 +135,15 @@ class PhotoUpdater {
 			ob_end_flush();
 			print $e->getMessage();
 		}
+	}
+
+	/**
+	 * Answer an array of skipped photo-ids.
+	 *
+	 * @return array()
+	 */
+	public function getSkipped() {
+		return $this->skipped;
 	}
 
 	/**
@@ -242,6 +253,7 @@ class PhotoUpdater {
 		$errors = $flickr_photo->getErrors();
 		if (count($errors)) {
 			$this->num_skipped++;
+			$this->skipped[] = $flickr_photo->getId();
 			print "Skipping import due to the following errors:\n\t";
 			print implode("\n\t", $errors);
 			print "\n\n";
@@ -272,6 +284,7 @@ class PhotoUpdater {
 		$errors = $flickr_photo->getErrors();
 		if (count($errors)) {
 			$this->num_skipped++;
+			$this->skipped[] = $flickr_photo->getId();
 			print "Skipping import due to the following errors:\n\t";
 			print implode("\n\t", $errors);
 			print "\n";
