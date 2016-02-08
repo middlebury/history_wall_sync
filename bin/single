@@ -3,11 +3,15 @@
 
 require_once (dirname(__FILE__).'/../include/init.php');
 
-$usage ="Usage:\n\t".$argv[0]." <flickr photo id>\n";
+$usage ="Usage:\n\t".$argv[0]." [-hq] <flickr photo id>
+
+	-h Show this help.
+	-q Quiet. Only show summary output.
+";
 $options = getOptionArray(__FILE__, $argv);
 $params = getParameterArray(__FILE__, $argv);
 
-if (!empty($options) || count($params) !== 1) {
+if (isset($options['h']) || isset($options['help']) || count($params) !== 1) {
 	print $usage;
 	exit(1);
 }
@@ -59,5 +63,8 @@ $wall_config = array(
 );
 
 $updater = new PhotoUpdater($WALL_CATEGORIES, $IMAGE_CACHE_DIR, $wall_config);
+if (isset($options['q'])) {
+	$updater->verbose = false;
+}
 $updater->update(new SinglePhotoIterator($photo));
 $updater->printSummary();
