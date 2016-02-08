@@ -18,6 +18,7 @@ require_once(dirname(__FILE__).'/FlickrWallPhoto.php');
  */
 class PhotoUpdater {
 
+	public $verbose = true;
 	protected $categories;
 	protected $image_cache_dir;
 	protected $wall_base_url;
@@ -49,15 +50,27 @@ class PhotoUpdater {
 	 */
 	public function update (PhotoIterator $photos) {
 		foreach ($photos as $photo) {
-			$flickr_photo = new FlickrWallPhoto($photo, $this->categories);
-			$this->source_flickr_ids[] = $flickr_photo->getId();
-			$cms_photo = $this->getCmsPhoto($flickr_photo->getId());
-			if ($cms_photo) {
-				$this->updateCmsPhoto($flickr_photo, $cms_photo);
-			} else {
-				$this->createCmsPhoto($flickr_photo);
+			try {
+				ob_start();
+				$flickr_photo = new FlickrWallPhoto($photo, $this->categories);
+				$this->source_flickr_ids[] = $flickr_photo->getId();
+				$cms_photo = $this->getCmsPhoto($flickr_photo->getId());
+				if ($cms_photo) {
+					$this->updateCmsPhoto($flickr_photo, $cms_photo);
+				} else {
+					$this->createCmsPhoto($flickr_photo);
+				}
+				if ($this->verbose) {
+					ob_end_flush();
+				} else {
+					ob_end_clean();
+				}
+			} catch (Exception $e) {
+				ob_end_flush();
+				print $e->getMessage()."\n";
 			}
 		}
+
 	}
 
 	/**
@@ -66,33 +79,44 @@ class PhotoUpdater {
 	 * @return nul
 	 */
 	function deletePhotosNotInSource () {
-		print "\nComparing photos for delete...\n";
+		try {
+			ob_start();
+			print "\nComparing photos for delete...\n";
 
-		$this->loadCmsPhotos();
-		if (empty($this->cms_photo_map))
-			throw new Exception('No CMS photos loaded, not deleting.');
-		if (empty($this->source_flickr_ids))
-			throw new Exception('No Flickr photos in search, not deleting.');
+			$this->loadCmsPhotos();
+			if (empty($this->cms_photo_map))
+				throw new Exception('No CMS photos loaded, not deleting.');
+			if (empty($this->source_flickr_ids))
+				throw new Exception('No Flickr photos in search, not deleting.');
 
-		$to_delete = array();
-		foreach ($this->cms_photo_map as $flickr_id => $cms_photo) {
-			if (!in_array($flickr_id, $this->source_flickr_ids)) {
-				$to_delete[] = $cms_photo;
+			$to_delete = array();
+			foreach ($this->cms_photo_map as $flickr_id => $cms_photo) {
+				if (!in_array($flickr_id, $this->source_flickr_ids)) {
+					$to_delete[] = $cms_photo;
+				}
 			}
-		}
 
-		if (count($to_delete) > (count($this->cms_photo_map) * 0.20))
-			throw new Exception("\nWARNING!!!\nTrying to delete more than 20% of the CMS photos. Something may have gone wrong -- not deleting.");
+			if (count($to_delete) > (count($this->cms_photo_map) * 0.20))
+				throw new Exception("\nWARNING!!!\nTrying to delete more than 20% of the CMS photos. Something may have gone wrong -- not deleting.");
 
-		if (empty($to_delete)) {
-			print "No photos to delete from the CMS.\n";
-		} else {
-			$cms_url = $this->wall_base_url.'admin/grid/delete/';
-			foreach ($to_delete as $cms_photo) {
-				print "Deleting ".$cms_photo->id." '".$cms_photo->title."'. Flickr id ".$cms_photo->flickr_id." wasn't in the source.\n";
-				$data = array();
-				$this->postToCms($cms_url.'?id='.$cms_photo->id, $data);
+			if (empty($to_delete)) {
+				print "No photos to delete from the CMS.\n";
+			} else {
+				$cms_url = $this->wall_base_url.'admin/grid/delete/';
+				foreach ($to_delete as $cms_photo) {
+					print "Deleting ".$cms_photo->id." '".$cms_photo->title."'. Flickr id ".$cms_photo->flickr_id." wasn't in the source.\n";
+					$data = array();
+					$this->postToCms($cms_url.'?id='.$cms_photo->id, $data);
+				}
 			}
+			if ($this->verbose) {
+				ob_end_flush();
+			} else {
+				ob_end_clean();
+			}
+		} catch (Exception $e) {
+			ob_end_flush();
+			print $e->getMessage();
 		}
 	}
 
@@ -357,7 +381,7 @@ class PhotoUpdater {
 			// Then continue.
 		} else {
 			print "   ...ERROR:\n".$result;
-			exit(2);
+			throw new Exception("Error posting to the CMS.");
 		}
 
 		return TRUE;
