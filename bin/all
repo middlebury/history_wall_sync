@@ -31,3 +31,5 @@ $updater->update(
 );
 
 $updater->deletePhotosNotInSource();
+
+$updater->printSummary();

@@ -60,4 +60,4 @@ $wall_config = array(
 
 $updater = new PhotoUpdater($WALL_CATEGORIES, $IMAGE_CACHE_DIR, $wall_config);
 $updater->update(new SinglePhotoIterator($photo));
-
+$updater->printSummary();

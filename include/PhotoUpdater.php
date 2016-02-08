@@ -25,6 +25,14 @@ class PhotoUpdater {
 	protected $wall_auth_token = null;
 	protected $source_flickr_ids;
 
+	protected $total_evaluated = 0;
+	protected $num_skipped = 0;
+	protected $num_no_changes = 0;
+	protected $num_updated = 0;
+	protected $num_created = 0;
+	protected $num_deleted = 0;
+	protected $num_errors = 0;
+
 	/**
 	 * Constructor
 	 *
@@ -50,6 +58,7 @@ class PhotoUpdater {
 	 */
 	public function update (PhotoIterator $photos) {
 		foreach ($photos as $photo) {
+			$this->total_evaluated++;
 			try {
 				ob_start();
 				$flickr_photo = new FlickrWallPhoto($photo, $this->categories);
@@ -66,12 +75,16 @@ class PhotoUpdater {
 					ob_end_clean();
 				}
 			} catch (Exception $e) {
+				$this->num_errors++;
 				ob_end_flush();
 				print $e->getMessage()."\n";
 				Mailer::send($e->getMessage()."\n\nFlickr URL: https://www.flickr.com/photos/middarchive/".$flickr_photo->getId());
 			}
 		}
+	}
 
+	function printSummary() {
+		print date('c').sprintf(" %d Flick Photos Evaluated, %d skipped due to data errors, %d had no changes, %d created, %d updated, %d deleted, %d errors.\n", $this->total_evaluated, $this->num_skipped, $this->num_no_changes, $this->num_created, $this->num_updated, $this->num_deleted, $this->num_errors);
 	}
 
 	/**
@@ -105,6 +118,7 @@ class PhotoUpdater {
 			} else {
 				$cms_url = $this->wall_base_url.'admin/grid/delete/';
 				foreach ($to_delete as $cms_photo) {
+					$this->num_deleted++;
 					print "Deleting ".$cms_photo->id." '".$cms_photo->title."'. Flickr id ".$cms_photo->flickr_id." wasn't in the source.\n";
 					$data = array();
 					$this->postToCms($cms_url.'?id='.$cms_photo->id, $data);
@@ -227,12 +241,14 @@ class PhotoUpdater {
 		// Check for errors
 		$errors = $flickr_photo->getErrors();
 		if (count($errors)) {
+			$this->num_skipped++;
 			print "Skipping import due to the following errors:\n\t";
 			print implode("\n\t", $errors);
 			print "\n\n";
 			return;
 		}
 
+		$this->num_created++;
 		$this->postToCms($cms_url, $data);
 
 		print "\n";
@@ -255,6 +271,7 @@ class PhotoUpdater {
 		// Check for errors
 		$errors = $flickr_photo->getErrors();
 		if (count($errors)) {
+			$this->num_skipped++;
 			print "Skipping import due to the following errors:\n\t";
 			print implode("\n\t", $errors);
 			print "\n";
@@ -309,9 +326,11 @@ class PhotoUpdater {
 
 		if ($changed) {
 			print "Changes detected, updating...\n";
+			$this->num_updated++;
 			$this->postToCms($cms_url, $data);
 			$this->updateCmsAsset($cms_photo->image->id, $flickr_photo);
 		} else {
+			$this->num_no_changes++;
 			print "No changes detected, skipping update.\n";
 		}
 
