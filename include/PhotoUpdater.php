@@ -374,17 +374,54 @@ class PhotoUpdater {
 		$response_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 		curl_close ($curl);
 
+		// Look for an error message burried in the HTML.
+		$error_message = $this->extractErrorMessageFromHtml($result);
+		if (!$error_message) {
+			$error_message = $result;
+		}
+
 		if ($response_code == 302) {
 			print "   ...done.\n";
 		} else if ($response_code == 413) {
-			print "   ...ERROR:\n".$result;
+			print "   ...ERROR:\n".(empty($error_message)?$result:$error_message);
 			// Then continue.
 		} else {
-			print "   ...ERROR:\n".$result;
-			throw new Exception("Error posting to the CMS.");
+			print "   ...ERROR".(empty($error_message)?":\n".$result:"\n");
+			throw new Exception("Error posting to the CMS: '".$error_message."'\ndata=".print_r($data, true));
 		}
 
 		return TRUE;
+	}
+
+	/**
+	 * Answer an error message burried in the HTML response.
+	 *
+	 * @param string $html
+	 * @return string
+	 * @access protected
+	 */
+	protected function extractErrorMessageFromHtml($htmlString) {
+		libxml_use_internal_errors(true);
+		$html = DOMDocument::loadHTML($htmlString);
+		if ($html) {
+			$xpath = new DOMXPath($html);
+			$errors = $xpath->query('//div[@class="alert alert-error"]');
+			if ($errors->length) {
+				$error_messages = array();
+				foreach ($errors as $error) {
+					$close_links = $xpath->query('./a[@class="close"]', $error);
+					foreach ($close_links as $link) {
+						$error->removeChild($link);
+					}
+					$message = trim(strip_tags($error->nodeValue));
+					if (strlen($message)) {
+						$error_messages[] = $message;
+					}
+					return implode("\n", $error_messages);
+				}
+			}
+		}
+		return '';
 	}
 
 	/**
