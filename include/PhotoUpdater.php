@@ -63,6 +63,9 @@ class PhotoUpdater {
 			$this->total_evaluated++;
 			try {
 				ob_start();
+				if (!is_object($photo)) {
+					throw new Exception('$photo is not an object. Maybe we got bad data from Flickr?. '.$photos->get_debug(), 777);
+				}
 				$flickr_photo = new FlickrWallPhoto($photo, $this->categories);
 				$this->source_flickr_ids[] = $flickr_photo->getId();
 				$cms_photo = $this->getCmsPhoto($flickr_photo->getId());
@@ -80,7 +83,13 @@ class PhotoUpdater {
 				$this->num_errors++;
 				ob_end_flush();
 				print $e->getMessage()."\n";
-				Mailer::send($e->getMessage()."\n\nFlickr URL: https://www.flickr.com/photos/middarchive/".$flickr_photo->getId());
+				if ($e->getCode() == 777) {
+					// Stop if we are hitting non-objects. somthing is wrong.
+					Mailer::send($e->getMessage()."\n\nFlickr URL: https://www.flickr.com/photos/middarchive/??");
+					throw $e;
+				} else {
+					Mailer::send($e->getMessage()."\n\nFlickr URL: https://www.flickr.com/photos/middarchive/".$flickr_photo->getId());
+				}
 			}
 		}
 	}

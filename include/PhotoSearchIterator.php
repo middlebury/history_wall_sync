@@ -51,6 +51,16 @@ class PhotoSearchIterator extends PhotoIterator {
 	}
 
 	/**
+	 * Answer some debug info about our current state.
+	 *
+	 * @return string
+	 * @access public
+	 */
+	public function get_debug () {
+		return parent::get_debug()." search_args=".print_r($this->search_args, true)." last_response=".print_r($this->flickr->response, true);
+	}
+
+	/**
 	 * Fetch a page of results
 	 *
 	 * @param int $pagenum

@@ -44,6 +44,16 @@ abstract class PhotoIterator implements Iterator, ArrayAccess, Countable {
 	}
 
 	/**
+	 * Answer some debug info about our current state.
+	 *
+	 * @return string
+	 * @access public
+	 */
+	public function get_debug () {
+		return get_class($this).": perpage=".$this->perpage." position=".$this->position;
+	}
+
+	/**
 	 * Answer the page number a photo offset will be found on.
 	 *
 	 * @param int $photo_offset
@@ -165,4 +175,3 @@ abstract class PhotoIterator implements Iterator, ArrayAccess, Countable {
     	return $this->total_photos;
     }
 }
-
