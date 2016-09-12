@@ -179,11 +179,11 @@ class FlickrWallPhoto {
 		$warnings = array();
 
 		if (preg_match('/^("|“|&quot;).+/', $this->getDescription()) && !$this->descriptionIsQuote())
-			$warnings[] = 'Description starts with a quotation mark, but isn\'t properly formatted as a quote.';
+			$warnings[] = 'Description starts with a quotation mark, but isn\'t properly formatted as a quote. (See <a href="formatting.php#description-quotes" target="_blank">formatting details</a>)';
 
 		$tags = $this->getNonMatchingTags();
 		if (count($tags)) {
-			$warnings[] = count($tags).' unknown tags will be skipped: <ul><li>'.implode('</li> <li>', $tags).'</li></ul>';
+			$warnings[] = count($tags).' unknown tags will be skipped (See <a href="formatting.php#categories-tags" target="_blank">formatting details</a>): <ul><li>'.implode('</li> <li>', $tags).'</li></ul>';
 		}
 
 		return $warnings;
@@ -194,12 +194,12 @@ class FlickrWallPhoto {
 
 		$len = strlen($this->getTitle());
 		if ($len > 66)
-			$warnings[] = 'Title is '.$len.' characters, max is 66.';
+			$warnings[] = 'Title is '.$len.' characters, max is 66. (See <a href="formatting.php#title-length" target="_blank">formatting details</a>)';
 
 
 		$len = strlen($this->getDescription());
 		if ($len > 240)
-			$warnings[] = 'Description is '.$len.' characters, max is 240.';
+			$warnings[] = 'Description is '.$len.' characters, max is 240. (See <a href="formatting.php#description-length" target="_blank">formatting details</a>)';
 
 		if (!count($this->getCategories()))
 			$warnings[] = 'No valid categories are specified.';

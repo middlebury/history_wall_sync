@@ -85,3 +85,12 @@ table.report td.warnings .error {
 	height: 110px;
 	margin: 2px;
 }
+
+div.description_example {
+	margin: 1em;
+	padding: 1em;
+	background-color: #ddd;
+	border: 1px solid #777;
+	white-space: pre-line;
+	max-width: 25em;
+}

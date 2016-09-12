@@ -14,6 +14,9 @@ require_once (dirname(__FILE__).'/../include/init.php');
 	<h1>Middlebury Flickr - History Wall  reports</h1>
 	<p>Below are reports of the parsed output of the Flickr archive that will eventually be sent to the History Wall. These reports are presented separately to allow easier location and evaluation of various groups of images.</p>
 
+	<h3>Formatting details</h3>
+	<p>The <a href="formatting.php">Formatting Details</a> page itemizes the particular details of how to format descriptions and categories.</p>
+
 	<h2>Single Image</h2>
 	<form action="single.php" method="GET">
 		<label for="photo">Paste the photo's Flickr id or URL in the text area and submit to see the report for just that image:</label>
