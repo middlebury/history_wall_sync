@@ -684,7 +684,7 @@ if ( !class_exists('phpFlickr') ) {
 		function auth_getToken ($frob) {
 			/* https://www.flickr.com/services/api/flickr.auth.getToken.html */
 			$this->request('flickr.auth.getToken', array('frob'=>$frob));
-			$_SESSION['phpFlickr_auth_token'] = $this->parsed_response['auth']['token'];
+			$_SESSION['phpFlickr_auth_token'] = $this->clean_text_nodes($this->parsed_response['auth']['token']);
 			return $this->parsed_response ? $this->parsed_response['auth'] : false;
 		}
 

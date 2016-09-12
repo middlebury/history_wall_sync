@@ -12,8 +12,13 @@
     $f = new phpFlickr("<api key>", "<secret>");
     
     //change this to the permissions you will need
-    $f->auth("read");
-    
+    if (empty($_GET['frob'])) {
+        $f->auth("read");
+    } else {
+        $f->auth_getToken($_GET['frob']);
+    }
+
+
     echo "Copy this token into your code: " . $_SESSION['phpFlickr_auth_token'];
     
 ?>

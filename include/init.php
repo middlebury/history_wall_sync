@@ -14,7 +14,11 @@ require_once (dirname(__FILE__).'/../config.php');
 
 $messages = array();
 
-$flickr = new phpFlickr($FLICKR_API_KEY);
+$flickr = new phpFlickr($FLICKR_API_KEY, $FLICKR_API_SECRET);
+// Use an authentication token instead of making anonymous requests.
+if (!empty($FLICKR_AUTH_TOKEN)) {
+	$flickr->setToken($FLICKR_AUTH_TOKEN);
+}
 
 // Set up caching
 if (!empty($FLICKR_API_CACHE_TYPE)) {

@@ -5,6 +5,14 @@
  *********************************************************/
 $FLICKR_API_KEY = '';
 $FLICKR_API_SECRET = '';
+/*********************************************************
+ * To make authenticated responses, symlink the
+ * phpflickr/getToken.php file into the webroot directory,
+ * then access it via your browser. This will start the
+ * authentication flow and provide you with the auth_token
+ * that can be entered below.
+*********************************************************/
+$FLICKR_AUTH_TOKEN = '';
 
 
 
