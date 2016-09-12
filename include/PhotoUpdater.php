@@ -444,7 +444,8 @@ class PhotoUpdater {
 	 */
 	protected function extractErrorMessageFromHtml($htmlString) {
 		libxml_use_internal_errors(true);
-		$html = DOMDocument::loadHTML($htmlString);
+		$html = new DOMDocument();
+		$html->loadHTML($htmlString);
 		if ($html) {
 			$xpath = new DOMXPath($html);
 			$errors = $xpath->query('//div[@class="alert alert-error"]');
