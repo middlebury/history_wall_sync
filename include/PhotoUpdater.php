@@ -345,6 +345,10 @@ class PhotoUpdater {
 			print "	the Flickr update date is later than the CMS update date.\n";
 			$changed = TRUE;
 		}
+		if (is_null($cms_photo->image)) {
+			print "	the CMS doesn't have an image file.\n";
+			$changed = TRUE;
+		}
 
 		if ($changed) {
 			print "Changes detected, updating...\n";
