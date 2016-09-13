@@ -346,8 +346,14 @@ class PhotoUpdater {
 			$changed = TRUE;
 		}
 		if (is_null($cms_photo->image)) {
-			print "	the CMS doesn't have an image file.\n";
-			$changed = TRUE;
+			print "	the CMS doesn't have an image file, deleting and recreating...\n";
+			// Delete the image
+			$cms_url = $this->wall_base_url.'admin/grid/delete/';
+			print "Deleting ".$cms_photo->id." '".$cms_photo->title."'. Flickr id ".$cms_photo->flickr_id." wasn't in the source.\n";
+			$data = array();
+			$this->postToCms($this->wall_base_url.'admin/grid/delete/?id='.$cms_photo->id, $data);
+			// Recreate the image.
+			return $this->createCmsPhoto($flickr_photo);
 		}
 
 		if ($changed) {
