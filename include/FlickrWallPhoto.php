@@ -164,9 +164,20 @@ class FlickrWallPhoto {
 	}
 
 	public function getLargeUrl() {
-		if (empty($this->photo->url_l))
-			return $this->getOriginalUrl();
-		return $this->photo->url_l;
+		# l == old Large 1024
+		if (!empty($this->photo->url_l))
+			return $this->photo->url_l;
+		# b == new Large 1024
+		if (!empty($this->photo->url_b))
+			return $this->photo->url_b;
+		# h == Large 1600
+		if (!empty($this->photo->url_h))
+			return $this->photo->url_h;
+		# k == Large 2048
+		if (!empty($this->photo->url_k))
+			return $this->photo->url_k;
+
+		return $this->getOriginalUrl();
 	}
 
 	public function getThumbnailUrl() {

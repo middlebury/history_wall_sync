@@ -37,16 +37,26 @@ foreach ($photo->tags['tag'] as $tag) {
 $photo->tags = implode(' ', $tags);
 
 foreach ($sizes as $size) {
-	if (preg_match('/_([tmlko])\.[a-z]+$/', $size['source'], $m)) {
+	if (preg_match('/_([tmlbhko])\.[a-z]+$/', $size['source'], $m)) {
 		switch ($m[1]) {
 			case 't':
 				$photo->url_t = $size['source'];
 				break;
-			case 'k':
-				$photo->url_k = $size['source'];
-				break;
+			# old large
 			case 'l':
 				$photo->url_l = $size['source'];
+				break;
+			# b == new large 1024
+			case 'b':
+				$photo->url_b = $size['source'];
+				break;
+			# h == new large 1600
+			case 'h':
+				$photo->url_h = $size['source'];
+				break;
+			# k == large 2048
+			case 'k':
+				$photo->url_k = $size['source'];
 				break;
 			case 'o':
 				$photo->url_o = $size['source'];
