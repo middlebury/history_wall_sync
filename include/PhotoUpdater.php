@@ -505,7 +505,11 @@ class PhotoUpdater {
 		$mimetype = image_type_to_mime_type(exif_imagetype($temp_file));
 		$filename = basename($temp_file);
 
-		return '@'.$temp_file.';type='.$mimetype.';filename='.$flickr_photo->getId().'.'.$extension;
+		if (class_exists('CURLFile')) {
+			return new CURLFile($temp_file, $mimetype, $flickr_photo->getId().'.'.$extension);
+		} else {
+			return '@'.$temp_file.';type='.$mimetype.';filename='.$flickr_photo->getId().'.'.$extension;
+		}
 	}
 
 	/**
