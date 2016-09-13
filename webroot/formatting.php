@@ -52,8 +52,26 @@ This is the extended description that can be as long as you want. It can go on f
 
 We're still going with this longer description. It won't be visible in the Wall, just in Flickr.</div>
 
+	<a name="cropping-tags"/>
+	<h2>4. Cropping Tags</h3>
+	<p>There are 4 special tags that can be added to photos to tell the Wall CMS to shift where it crops the photo when showing small versions:</p>
+	<ul>
+		<li>For horizontal aspect-ratios:
+			<ul>
+				<li>wallhcropleft</li>
+				<li>wallhcropright</li>
+			</ul>
+		</li>
+		<li>For vertical aspect-ratios:
+			<ul>
+				<li>wallvcroptop</li>
+				<li>wallvcropbottom</li>
+			</ul>
+		</li>
+	</ul>
+
   <a name="categories-tags"/>
-  <h2>3. Categories</h3>
+  <h2>4. Categories</h3>
   <p>"Categories" in the Wall CMS map to Flickr "Tags". Images must have at least one valid Category/Tag to be synced to the wall -- they would never be seen if they didn't have any.</p>
   <p>The following are the list of valid Categories/Tags defined in the Wall CMS:</p>
   <?php if (!empty($messages)) { print '<p class="error">Error: '.implode("; ", $messages). "</p>"; } ?>
