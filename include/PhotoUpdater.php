@@ -255,9 +255,6 @@ class PhotoUpdater {
 
 		$cms_url = $this->wall_base_url.'admin/grid/new/';
 
-		$data = $this->getCmsMetadataPostFields($flickr_photo);
-		$data['image_file'] = $this->getCmsImagePostData($flickr_photo);
-
 		// Check for errors
 		$errors = $flickr_photo->getErrors();
 		if (count($errors)) {
@@ -268,6 +265,9 @@ class PhotoUpdater {
 			print "\n\n";
 			return;
 		}
+
+		$data = $this->getCmsMetadataPostFields($flickr_photo);
+		$data['image_file'] = $this->getCmsImagePostData($flickr_photo);
 
 		$this->num_created++;
 		$this->postToCms($cms_url, $data);
