@@ -1,6 +1,11 @@
 #!/bin/env php
 <?php
 
+// phpflickr will call session_start() even though we are a CLI program.
+// Don't bother trying to save session data.
+require_once (dirname(__FILE__).'/../include/NullSessionHandler.php');
+session_set_save_handler(new NullSessionHandler);
+
 require_once (dirname(__FILE__).'/../include/init.php');
 
 $usage ="Usage:\n\t".$argv[0]." [-hq]
