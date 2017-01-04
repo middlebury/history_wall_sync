@@ -82,7 +82,7 @@ class PhotoUpdater {
 			} catch (Exception $e) {
 				$this->num_errors++;
 				ob_end_flush();
-				print $e->getMessage()."\n";
+				print date('c')." ".$e->getMessage()."\n";
 				if ($e->getCode() == 777) {
 					// Stop if we are hitting non-objects. somthing is wrong.
 					Mailer::send($e->getMessage()."\n\nFlickr URL: https://www.flickr.com/photos/middarchive/??");
