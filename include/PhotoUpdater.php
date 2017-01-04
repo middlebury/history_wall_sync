@@ -181,7 +181,7 @@ class PhotoUpdater {
 			$cms_url = $this->wall_base_url.'api/grid/';
 			$opts = array(
 				'http' => array(
-					'timeout' => 600,
+					'timeout' => 1200,
 				),
 			);
 			$context = stream_context_create($opts);

@@ -104,7 +104,13 @@ if (empty($WALL_BASE_URL)) {
 } else {
 	$category_cache = $IMAGE_CACHE_DIR.'/categories.cache';
 	if (!file_exists($category_cache) || filemtime($category_cache) < time() - 60) {
-		file_put_contents($category_cache, file_get_contents($WALL_BASE_URL.'api/tag/'));
+		$opts = array(
+			'http' => array(
+				'timeout' => 1200,
+			),
+		);
+		$context = stream_context_create($opts);
+		file_put_contents($category_cache, file_get_contents($WALL_BASE_URL.'api/tag/', false, $context));
 	}
 	if (!file_exists($category_cache) || !is_readable($category_cache)  || !filesize($category_cache)) {
 		$messages[] = 'Could not cache the category listing, using static list instead.';
