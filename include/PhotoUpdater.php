@@ -90,6 +90,10 @@ class PhotoUpdater {
 				} else {
 					Mailer::send($e->getMessage()."\n\nFlickr URL: https://www.flickr.com/photos/middarchive/".$flickr_photo->getId());
 				}
+				// Stop if we have an error loading the grid image list, don't keep trying each photo.
+				if ($e->getCode() == 500 || $e->getCode() == 501) {
+					throw $e;
+				}
 			}
 		}
 	}
@@ -187,12 +191,12 @@ class PhotoUpdater {
 			$context = stream_context_create($opts);
 			$json = file_get_contents($cms_url, false, $context);
 			if (empty($json))
-				throw new Exception('Could not load the list of grid images from the CMS at '.$cms_url);
+				throw new Exception('Could not load the list of grid images from the CMS at '.$cms_url, 500);
 			$results = json_decode($json);
 			if (!is_object($results)) {
 				ob_start();
 				var_dump($json);
-				throw new Exception('json_decode failed for '.$cms_url.' : '.ob_get_clean());
+				throw new Exception('json_decode failed for '.$cms_url.' : '.ob_get_clean(), 501);
 			}
 			$this->cms_photos = $results->data;
 			$this->cms_photo_map = array();
