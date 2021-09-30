@@ -79,6 +79,7 @@ class PhotoSearchIterator extends PhotoIterator {
 				'page' => $pagenum,
 			)
 		);
+		sleep(1);
 		return $this->flickr->photos_search($args);
 	}
 }
