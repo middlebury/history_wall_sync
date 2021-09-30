@@ -21,7 +21,7 @@ if (isset($options['h']) || isset($options['help']) || count($params) !== 0) {
 	exit(1);
 }
 
-$sort = 'date-taken-asc';
+$sort = 'date-uploaded-desc';
 
 $args = array(
 	'user_id' => $FLICKR_USERID,
